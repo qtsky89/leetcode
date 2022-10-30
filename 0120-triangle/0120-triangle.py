@@ -17,9 +17,6 @@ class Solution:
                 else:
                     triangle[i][j] += triangle[i-1][j-1]
         
-        
-        print(triangle)
-        
         return min(triangle[-1])
         
         
