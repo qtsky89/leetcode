@@ -3,33 +3,19 @@ class Solution:
         """
         Do not return anything, modify nums in-place instead.
         """
-        if len(nums) == 1:
-            return
         
-        for i in range(len(nums)-1):
-            for j in range(i+1, len(nums)):
-                if nums[i] == 0 and nums[j] != 0:
-                    nums[i], nums[j] = nums[j], nums[i]
-                    break
-
-        '''
-        nums = [0 1 0 3 12]
-                p1p2
-
-               [1 0 0 3 12]
-                  p1  p2
-
-               [1 3 0 0 12]
-                    p1  p2
-
-               [1 3 12 0 0]
-        '''
-
+        zero_count = 0
+        i = 0
+        for j in range(len(nums)):
+            if nums[j] != 0:
+                nums[i] = nums[j]
+                i+=1
+            else:
+                zero_count += 1
         
+        if zero_count != 0:
+            nums[-zero_count:] = [0] * zero_count
         
         
 
-
-            
-            
-            
+        
