@@ -13,7 +13,6 @@ class Solution:
                 return
 
             current += node.val
-            print(current)
 
             # leaf node
             if (not node.left) and (not node.right) and (current == targetSum):
