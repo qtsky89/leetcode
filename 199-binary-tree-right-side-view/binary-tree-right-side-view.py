@@ -23,7 +23,6 @@ class Solution:
             if cur_level in ret:            
                 ret[cur_level].append(item.val)
             else:
-                print(item, cur_level)
                 ret[cur_level] = [item.val]
 
             if item.left:
