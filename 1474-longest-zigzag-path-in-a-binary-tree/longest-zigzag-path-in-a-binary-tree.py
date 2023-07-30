@@ -13,12 +13,12 @@ class Direction(Enum):
 #         self.right = right
 class Solution:
     def longestZigZag(self, root: Optional[TreeNode]) -> int:
-        longest_length = [0]
+        longest_length = 0
         def dfs(node: TreeNode, prev_direction: Direction, cur_length: int):
             if not node:
                 return
-            
-            longest_length[0] = max(longest_length[0], cur_length)
+            nonlocal longest_length
+            longest_length = max(longest_length, cur_length)
 
             if node.left:
                 if prev_direction != Direction.LEFT:
@@ -35,4 +35,4 @@ class Solution:
         dfs(root, Direction.MIDDLE, 0)
 
 
-        return longest_length[0]
+        return longest_length
