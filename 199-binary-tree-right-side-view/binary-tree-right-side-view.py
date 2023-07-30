@@ -9,18 +9,22 @@
 from collections import deque
 class Solution:
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []
+
         # key: level, value: []
-        ret = defaultdict(list)
+        ret = {}
 
         q = deque([[root, 0]])
 
         while q:
             item, cur_level = q.popleft()
 
-            if not item:
-                continue
-            
-            ret[cur_level].append(item.val)
+            if cur_level in ret:            
+                ret[cur_level].append(item.val)
+            else:
+                print(item, cur_level)
+                ret[cur_level] = [item.val]
 
             if item.left:
                 q.append([item.left, cur_level+1])
