@@ -30,8 +30,8 @@ class Solution:
         second_head = head.next
         p1, p2 = head, head.next
         while p2 and p2.next:
-            p1.next = p1.next.next if p1.next else None
-            p2.next = p2.next.next if p2.next else None
+            p1.next = p1.next.next
+            p2.next = p2.next.next
             p1, p2 = p1.next, p2.next
         
 
