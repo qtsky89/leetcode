@@ -37,7 +37,5 @@ class Solution:
             
             return cache[n]
         
-        print(cache)
-        
         return dp(len(cost))
         
