@@ -24,10 +24,7 @@ class Solution:
 
             for neighbor in neighbors[item]:
                 if neighbor not in visited:
-
-                    if neighbor in edges and item in edges[neighbor]:
-                        pass
-                    else:
+                    if not (neighbor in edges and item in edges[neighbor]):
                         count += 1
                     q.append(neighbor)
         return count
