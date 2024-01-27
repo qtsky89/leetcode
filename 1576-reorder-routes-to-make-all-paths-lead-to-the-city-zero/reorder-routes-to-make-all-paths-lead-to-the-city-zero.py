@@ -1,5 +1,6 @@
 from collections import deque
 
+# https://www.youtube.com/watch?v=m17yOR5_PpI
 class Solution:
     def minReorder(self, n: int, connections: List[List[int]]) -> int:
         edges = {x: [] for x in range(n)}
@@ -21,7 +22,6 @@ class Solution:
             visited.add(item)
 
             # neighbor = 1, 4 ...
-
             for neighbor in neighbors[item]:
                 if neighbor not in visited:
                     if not (neighbor in edges and item in edges[neighbor]):
