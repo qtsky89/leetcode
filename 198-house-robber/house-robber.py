@@ -28,6 +28,9 @@ class Solution:
         dp[0], dp[1] = nums[0], nums[1]
         
         for i in range(2, len(nums)):
-            dp[i] = max(dp[i-1], dp[i-2] + nums[i], dp[i-3] + nums[i])
+            tmp = [dp[i-1], dp[i-2] + nums[i]]
+            if i-3 >= 0:
+                tmp.append(dp[i-3] + nums[i])
+            dp[i] = max(tmp)
         
         return dp[-1]
