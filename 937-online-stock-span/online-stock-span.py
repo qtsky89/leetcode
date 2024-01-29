@@ -4,8 +4,13 @@
 
 1   1   1  2  1  4  6
 
+
+stack
+100 85  
+1    6  
 '''
 
+# brute force
 class StockSpanner:
     def __init__(self):
         self._stocks = []
