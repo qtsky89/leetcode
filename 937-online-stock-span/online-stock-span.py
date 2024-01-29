@@ -13,16 +13,18 @@ stack
 # brute force
 class StockSpanner:
     def __init__(self):
-        self._stocks = []
+        self._stack = []
 
     def next(self, price: int) -> int:
-        self._stocks.append(price)
-
-        for i in range(len(self._stocks)-1, -1, -1):
-            if self._stocks[i] > price:
-                return (len(self._stocks)-1 -i)
+        total = 1
+        while self._stack and self._stack[-1][0] <= price:
+            stacked_price, count =  self._stack.pop()
+            total += count
         
-        return len(self._stocks)
+        self._stack.append([price, total])
+        return total
+        
+        
 
 
 # Your StockSpanner object will be instantiated and called as such:
