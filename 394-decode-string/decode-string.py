@@ -21,9 +21,9 @@ class Solution:
             elif stack and s[i] == ']':
                 tmp = []
                 while stack and stack[-1] != '[':
-                    tmp.insert(0, stack.pop())
+                    tmp.append(stack.pop())
                 stack.pop()
-                stack.append(''.join(tmp * int(stack.pop()) ))
+                stack.append(''.join(tmp[::-1] * int(stack.pop()) ))
             else:
                 stack.append(s[i])
             i+=1
