@@ -1,24 +1,33 @@
 class Solution:
     def asteroidCollision(self, asteroids: List[int]) -> List[int]:
+        '''
+        asteroids = [5, 10, 15, -5, -5, -25, 30]
+                                         ^       
+        
+        stack = [-25, 30]
+        '''
+
         stack = []
-
+        
         i = 0
-        while i <= len(asteroids)-1:
-            # collide
-            a = asteroids[i]
-            while stack and (stack[-1] > 0 and a < 0):
-                diff = a + stack[-1]
+        while i<= len(asteroids)-1:
+            if not stack or asteroids[i] > 0:
+                stack.append(asteroids[i])
+                i+=1
+                continue
 
-                if diff == 0: # both collide
-                    a = 0
+            if (asteroids[i] < 0 and stack[-1] > 0) and (stack[-1] + asteroids[i]) > 0:
+                i+=1
+                continue
+            elif (asteroids[i] < 0 and stack[-1] > 0) and (stack[-1] + asteroids[i]) == 0:
+                stack.pop()
+                i+=1
+                continue
+            elif (asteroids[i] < 0 and stack[-1] > 0) and (stack[-1] + asteroids[i]) < 0:
+                while stack and (asteroids[i] < 0 and stack[-1] > 0) and (stack[-1] + asteroids[i]) < 0:
                     stack.pop()
-                elif diff < 0: # asteroids[i] win
-                    stack.pop()
-                elif diff > 0: # stack win
-                    a = 0
-            if a != 0:
-                stack.append(a)
-
-            i+=1
-                  
+            else:
+                stack.append(asteroids[i])
+                i+=1
         return stack
+                   
