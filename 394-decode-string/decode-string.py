@@ -23,12 +23,12 @@ class Solution:
         # 3 [a 2 [c]]
         while i <= len(s)-1:
             if s[i].isdigit():
-                tmp = ''
+                tmp = []
 
                 while s[i].isdigit():
-                    tmp += s[i]
+                    tmp.append(s[i])
                     i += 1
-                stack.append(tmp)
+                stack.append(''.join(tmp))
             elif s[i] == ']':
                 # c
                 tmp = []
