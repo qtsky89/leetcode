@@ -1,10 +1,3 @@
-from enum import Enum
-
-class Direction(Enum):
-    MIDDLE = 0
-    LEFT = 1
-    RIGHT= 2
-
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -13,26 +6,45 @@ class Direction(Enum):
 #         self.right = right
 class Solution:
     def longestZigZag(self, root: Optional[TreeNode]) -> int:
-        longest_length = 0
-        def dfs(node: TreeNode, prev_direction: Direction, cur_length: int):
+        '''
+            1
+              1
+            1   1
+               1   1
+                 1
+                   1
+
+            if previous action is right:
+                we can continue with left child
+                we can continue with right child with 0 count
+            else 
+                we can continue with right child
+                we can continue with left child with 0 count
+            
+            return max count
+        ''' 
+
+        max_count = 0
+
+        # current_path => L, R, None(init)
+        def dfs(node: TreeNode, current_path: str | None , current_count):
             if not node:
                 return
-            nonlocal longest_length
-            longest_length = max(longest_length, cur_length)
+            
+            nonlocal max_count
 
-            if node.left:
-                if prev_direction != Direction.LEFT:
-                    dfs(node.left, Direction.LEFT, cur_length+1)
-                else:
-                    dfs(node.left, Direction.LEFT, 1)
+            max_count = max(max_count, current_count)
 
-            if node.right:
-                if prev_direction != Direction.RIGHT:
-                    dfs(node.right, Direction.RIGHT, cur_length+1)
-                else:
-                    dfs(node.right, Direction.RIGHT, 1)
-                            
-        dfs(root, Direction.MIDDLE, 0)
+            if current_path is None:
+                dfs(node.left, 'L', 1)
+                dfs(node.right, 'R', 1)
+            elif current_path == 'R':
+                dfs(node.left, 'L', current_count + 1)
+                dfs(node.right, 'R', 1)
+            else:
+                dfs(node.left, 'L', 1)
+                dfs(node.right, 'R', current_count + 1)
+            
+        dfs(root, None, 0)
 
-
-        return longest_length
+        return max_count
