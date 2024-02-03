@@ -3,26 +3,39 @@ from collections import deque
 class Solution:
     def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
         '''
-        0 1 2 3 4 5 6
+        example1.
+
+        n = 4
+        
+        0 1 2 3
+
+        0 is unlocked
+        coudln't enter without key
+
+        1 2 3 []
+        ^           key: 1
+          ^         key: 2
+            ^       key: 3
+              ^ 
+
+        example2.
+        [1,3] [3,0,1] [2] [0]
+         ^                       key: 1, 3
+                 ^               key: 1, 0, 3           
+                           ^     key: 1, 0, 3
         '''
 
-        visited = set()
         q = deque([0])
+
+        visited = set()
         while q:
             key = q.popleft()
+            visited.add(key)
 
-            # len(rooms) = 4
-            if key <= len(rooms) - 1 and  key not in visited:
-                visited.add(key)
-            
-            next_keys = rooms[key]
+            for key in rooms[key]:
+                if key not in visited:
+                    q.append(key)
 
-            for k in next_keys:
-                if k not in visited:
-                    q.append(k)
-            
         return len(visited) == len(rooms)
-
-
-
             
+        
