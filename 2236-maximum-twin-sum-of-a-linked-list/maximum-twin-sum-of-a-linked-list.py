@@ -6,42 +6,62 @@
 class Solution:
     def pairSum(self, head: Optional[ListNode]) -> int:
         '''
-        1.
-        5 -> 4 -> 2-> 1
+        head = 10 -> 5 -> 4 -> 2 -> 1 -> 20
 
-        case1 : 5 + 1
-        case2 : 4 + 2
+        ret = [10, 5, 4, 2, 1, 20]
 
-        max : 6
+        max(10 + 20, 5 + 1, 4+ 2) = > 30
 
-        2.
-        4 -> 2 -> 2 -> 3
+        
 
-        case1 : 4 + 3
-        case2 : 2 + 2
+        5 -> 4    2 -> 1
+                  2 <- 1
+        ^              ^
 
-        max = 7
+        step 1. find middle index
+        step 2. reverse the right list
+        step 3. get the maximum values
         '''
 
-        tmp: list[int] = []
-
-        p = head
-        while p:
-            tmp.append(p.val)
-            p = p.next
+        # step 1. find middle index
+        '''
+        5 -> 4 -> 2 -> 1
+        sf
+             s    f
+             sp   s      f
+        '''
         
+        slow_p_prev, slow_p, fast_p = head, head, head
+        while fast_p and fast_p.next:
+            slow_p_prev = slow_p
+            slow_p = slow_p.next
+            fast_p = fast_p.next.next
+        
+        slow_p_prev.next = None
+
+        # step2 reverse the right list
+        '''
+        2 <- 1
+        '''
+        p_prev, p = None, slow_p
+
+        while p:
+            tmp = p.next
+            p.next = p_prev
+            p_prev, p = p, tmp
+        
+        # step 3
         max_val = -float('inf')
-        for i in range(len(tmp)//2):
-            val = tmp[i] + tmp[-i-1]
-            max_val = max(max_val, val)
+        p1, p2 = head, p_prev
+
+        while p1 and p2:
+            max_val = max(max_val, p1.val + p2.val)
+            p1 = p1.next
+            p2 = p2.next
         
         return max_val
 
         
-
-
-
-
-
+        
 
 
