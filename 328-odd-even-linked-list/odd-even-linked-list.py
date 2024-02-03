@@ -6,52 +6,39 @@
 class Solution:
     def oddEvenList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         '''
-        1 -> 2 -> 3 -> 4 -> 5
-                            p1   p2
+        example1.
+            1 - > 2 -> 3 -> 4 -> 5
+         head1   head2
+            ^1    ^2
+                       ^1   ^2   
+                                 ^1  ^2
 
-        1 -> 3-> 5 -> 2 -> 4
 
+            ^1.next = head2
 
-
-        1-> 2-> 3-> 4
-        p1  p2
-                p1  p2
-
+            1 -> 3 -> 5 -> 2 -> 4
         
-        1 -> 2 -> 3
-                 p1   p2
+        example2.
+            1  -> 2
+          head1   head2
+
         '''
 
-        if head is None:
-            return None
-        if head.next is None:
+        if not head or not head.next:
             return head
         
-        second_head = head.next
-        p1, p2 = head, head.next
+        head1, head2 = head, head.next
+
+        p1, p2 = head1, head2
         while p2 and p2.next:
             p1.next = p1.next.next
             p2.next = p2.next.next
-            p1, p2 = p1.next, p2.next
+
+            p1 = p1.next
+            p2 = p2.next
         
+        p1.next = head2
 
-        p1.next = second_head
-
-        return head
-
+        return head1
         
-        
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
+            
