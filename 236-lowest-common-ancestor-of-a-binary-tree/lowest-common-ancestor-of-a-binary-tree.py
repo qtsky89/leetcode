@@ -7,43 +7,61 @@
 
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-
         '''
-      key   value(parent)
-       3 -> None
-       5 -> 3
-       ...
+        example1.
+
+                 3
+                
+            5(p)     1(q)
+             |
+          6   2    0    8
+               |
+            7   4
+
+        step1. make these hash function
+        {  
+            4 : 2
+            2 : 5
+            5 : 3
+        }
+
+        step2. make these list
+        4 -> 2 -> 5V -> 3
+        5V -> 3
+
+        step3. find common anccestor
         '''
 
-        # key: TreeNode, value: TreeNode(parent)
-        parent_map = {}
+        # step1
+        hash_map = {}
 
-        def dfs(node: TreeNode | None):
+        def dfs(node: TreeNode):
             if not node:
                 return
             
             if node.left:
-                parent_map[node.left] = node
+                hash_map[node.left] = node
                 dfs(node.left)
-            
             if node.right:
-                parent_map[node.right] = node
+                hash_map[node.right] = node
                 dfs(node.right)
-            
-        parent_map[root] = None
+        
+        hash_map[root] = None
         dfs(root)
 
-        visited = set()       
+        #step2. make these list
+
+        visited = set()
+
         while p:
             if p in visited:
                 return p
             visited.add(p)
-            p = parent_map[p]
+            p = hash_map[p]
         
         while q:
             if q in visited:
                 return q
             visited.add(q)
-            q = parent_map[q]
-        
+            q = hash_map[q]
         return None
