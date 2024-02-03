@@ -5,28 +5,44 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
-        count = 0 
-        def helper(root: TreeNode | None, current_sum: int):
-            if not root:
-                return
-            nonlocal count
-            current_sum += root.val
+    def pathSum(self, root: Optional[TreeNode], target_sum: int) -> int:
+        '''
+                 10
 
-            if current_sum == targetSum:
-                count += 1
-            helper(root.left, current_sum)
-            helper(root.right, current_sum)
+              5      -3
+
+            3     2      11
+
+          3  -2      1
+
+        step1. preorder 
+        step2. every node, I 'm going to pre order again keep sum and when targetSum is same then, increase count
+        step3. return count
+        '''
 
         count = 0
-        def dfs(node: TreeNode | None):
+
+        def dfs_sum(node: TreeNode, current_sum: int):
             if not node:
                 return
-            helper(node, 0)
+
+            nonlocal count
+
+            current_sum += node.val
+            if current_sum == target_sum:
+                count += 1
+            
+            dfs_sum(node.left, current_sum)
+            dfs_sum(node.right, current_sum)
+
+        def dfs(node: TreeNode):
+            if not node:
+                return
+            
+            dfs_sum(node, 0)
 
             dfs(node.left)
             dfs(node.right)
-        
-        dfs(root)
 
+        dfs(root)
         return count
