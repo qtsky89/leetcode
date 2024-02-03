@@ -2,85 +2,75 @@ from collections import deque
 
 class Solution:
     def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
-      '''
-      1.
-        a  -  b 
-         |   |
-           c
+        '''
+        example1.
 
-        a / b = 2.0
-        b / c = 3.0
+        a / b , b / c
+        2.0       3.0
 
-      2.
-      a  /  b = 0.2
-      b  /  c = 2.5
-      b  /  d = 5.0
-      '''
+        a / c, b /a, a/ e, a / a, x / x
 
-      '''
-      first make graph using map
-      key (tuple) value(float)
-      a = [(b, 2.0)]
-      b = [(a, 1/2), (c, 3.0)]
-      c = [(b, 1/3)]
-      '''
+        we couldn't get them answer return -1
 
-      graph = {}
-
-      for i in range(len(equations)):
-        key, value = equations[i]
         
-        if key not in graph:
-          graph[key] = []
-        graph[key].append((value, values[i]))
+        a / b = 2
+        b / c = 3
+
+        a / c = 6
+
+        # step1. make these hash_map
+        {
+           a : [ [b, 2.0], [d, 5.0] ]
+           b : [ [c, 3.0] ]
+        }
+
+        # step2. process every query using bfs
+        a -> b -> c
+
+        # step3. if we found end value, add to the result, if we coudn't return -1
+        '''
+
+        # step1. make these hash_map
+        hash_map = {}
+        # start = a, end = b
+        for i in range(len(equations)):
+            start, end = equations[i]
+            if start in hash_map:
+                hash_map[start].append([end, values[i]])
+            else:
+                hash_map[start] = [[end, values[i]]]
+            
+            if end in hash_map:
+                hash_map[end].append([start, 1/values[i]])
+            else:
+                hash_map[end] = [[start, 1/values[i]]]
         
-        if value not in graph:
-          graph[value] = []
-        graph[value].append((key, 1/values[i]))
+        # step2. process every query using bfs
+        for i in range(len(queries)):
+            queries[i].append(1)
+            queries[i].append(i)
+            queries[i].append(set())
 
-      ret = []
-      '''
-      second. find the path, if I coulnd't find the path then -1.0
-      '''
-      
-      for i in range(len(queries)):
-        start, end = queries[i]
-        ret.append(self._calculate(start, end, graph))
-      
-      return ret
+        ret = [-1] * len(queries)
+        q = deque(queries)
+        while q:
+            # key = a, end_value = c, current = 1
+            key, end_value, current, i, visited =  q.popleft()
 
-    def _calculate(self, start: float, end: float, graph: dict) -> int:
-      q = deque([[start, 1.0, set()]])
-      
-      while q:
-        item, cur_cal, visited = q.popleft()
+            if key in hash_map and key == end_value:
+                ret[i] = current
+                continue
+            visited.add(key)
 
-        if item not in graph:
-          continue
-        elif item == end:
-          return cur_cal
+            if key in hash_map:
+                for next_key, next_value in hash_map[key]:
+                    if next_key not in visited:
+                        q.append([next_key, end_value, current * next_value, i, set(visited)])
 
-        visited.add(item)
-        
-        for i in range(len(graph[item])):
-          next_item, next_cal =  graph[item][i]
-
-          if next_item not in visited:
-            q.append([next_item, cur_cal * next_cal, set(visited)])
-      
-      return -1.0
-          
-
-      
+        return ret
 
 
 
 
 
-      
-      
-        
-      
-
-      
 
