@@ -8,34 +8,34 @@
 from collections import deque
 class Solution:
     def maxLevelSum(self, root: Optional[TreeNode]) -> int:
+        '''
+            1       -> 1
+        7       0   -> 7
+    7       -8      -> -1
+        '''
 
-        q = deque([[root, 1]])
+        ret = []
+        q = deque([[root, 0]])
 
-        # 1 : 1, 2: 7, 3: -1
-        hash_map = {}
         while q:
-            item, cur_level = q.popleft()
+            item, level = q.popleft()
 
-            if cur_level in hash_map:
-                hash_map[cur_level] += item.val
+            if level == len(ret):
+                ret.append(item.val)
             else:
-                hash_map[cur_level] = item.val
-
+                ret[level] += item.val
+            
             if item.left:
-                q.append([item.left, cur_level+1])
+                q.append([item.left, level+1])
             if item.right:
-                q.append([item.right, cur_level+1])
-        
-        
-        max_val = -float('inf')
-        max_level = 1
-        for k in hash_map:
-            if max_val < hash_map[k]:
-                max_val = hash_map[k]
-                max_level = k
-            
-        
-        return max_level
+                q.append([item.right, level+1])
 
-            
-        
+        max_val = -float('inf')
+
+        ret_i = 0
+
+        for i in range(len(ret)):
+            if ret[i] > max_val:
+                ret_i = i
+                max_val = ret[i]
+        return ret_i+1
