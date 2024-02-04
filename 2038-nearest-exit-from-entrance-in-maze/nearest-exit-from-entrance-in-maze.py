@@ -1,40 +1,53 @@
-from collections import deque
-
 class Solution:
     def nearestExit(self, maze: List[List[str]], entrance: List[int]) -> int:
         '''
-        + + +
-        * . .
-        + + +
+        example1.
+
+        + + . +
+        . . * +
+        + + + .
+
+        step1. using queue put the entrace and visited (set)
+        step2. push queue (if possible) up donw left right
+        step3. while loop, if hit the exit, then return that count value
         '''
 
-        q = deque([(entrance[0], entrance[1], 0)])
+        # step1. using queue put the entrace and visited (set)
+        q = deque([[entrance[0], entrance[1], 0]])
 
         visited = set()
         while q:
-            x, y, count = q.popleft()
-            if (x,y) in visited:
+            i, j,  count = q.popleft()
+
+            if (i, j) in visited:
                 continue
             else:
-                visited.add((x, y))
+                visited.add((i, j))
 
-            # exit
-            if count != 0 and (x == 0 or y == 0 or x == len(maze)-1 or y == len(maze[0])-1):
+            # check if we reach the exit?
+            if [i, j] != entrance and (i==0 or i == len(maze)-1 or j==0 or j == len(maze[0])-1):
                 return count
             
-            if x + 1 <= len(maze)-1 and maze[x+1][y] != '+' and (x+1, y) not in visited:
-                q.append((x+1, y, count+1))
+            # down
+            if (i+1, j) not in visited and  i + 1 <= len(maze)-1 and maze[i+1][j] == '.':
+                q.append([i+1, j, count+1])
             
-            if x - 1 >= 0 and maze[x-1][y] != '+' and (x-1, y) not in visited:
-                q.append((x-1, y, count+1))
+            # right
+            if (i, j+1) not in visited and j+1 <= len(maze[0]) -1 and maze[i][j+1] == '.':
+                q.append([i, j+1,  count+1])
             
-            if y + 1 <= len(maze[0])-1 and maze[x][y+1] != '+' and (x, y+1) not in visited:
-                q.append((x, y+1, count+1))
+            # up
+            if (i-1, j) not in visited and i-1 >= 0 and maze[i-1][j] == '.':
+                q.append([i-1, j,  count+1])
             
-            if y - 1 >= 0 and maze[x][y-1] != '+' and (x, y-1) not in visited:
-                q.append((x, y-1, count+1))
-            
+            # left
+            if (i, j-1) not in visited and j-1 >=0 and maze[i][j-1] == '.':
+                q.append([i, j-1,  count+1])
         return -1
-                
 
-        
+
+
+
+
+
+                
