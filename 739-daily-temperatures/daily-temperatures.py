@@ -12,16 +12,13 @@ class Solution:
         ret = [0] * len(temperatures)
 
         for i in range(len(temperatures)):
-            if not stack:
-                stack.append(i)
-            
             while stack and temperatures[i] > temperatures[stack[-1]]:
                 index = stack.pop()
 
                 ret[index] = i - index
             
             stack.append(i)
-            
+
         return ret
             
             
