@@ -36,21 +36,24 @@ class Solution:
         
         num_pack.sort(key=lambda p:p[1], reverse=True)
         # nums_pack =[ [2, 4] [3, 3] [1, 2] [3, 1] ]
+        #                ^                               heap = [2]
+        #                       ^                        heap = [2,3]
+        #                               ^                heap = [2, 3, 1] * 2 => keep
+        #                                      ^         heap = [2, 3, 3] * 1 => keep
 
+        ret = 0
         min_heap = []
-        tmp_sum = 0
-        max_ret = 0
-
-        for x, y in num_pack:
-            heapq.heappush(min_heap, x)
-            tmp_sum += x
+        tmp = 0
+        for x, y, in num_pack:
+            heappush(min_heap, x)
+            tmp += x
 
             if len(min_heap) > k:
-                tmp_sum -= heapq.heappop(min_heap)
-            
+                tmp -= heapq.heappop(min_heap)
+
             if len(min_heap) == k:
-                max_ret = max(max_ret, tmp_sum * y)
-        return max_ret
-                
+               ret = max(ret, tmp * y) 
+        return ret
+            
             
         
