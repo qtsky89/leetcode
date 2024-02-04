@@ -30,12 +30,16 @@ class Solution:
         intervals.sort()
         
         count = 0
-        i = 0
-        while i <= len(intervals)-2:
+        i = 1
+
+        last_end = intervals[0][1]
+        while i <= len(intervals)-1:
             # check is overlapped ?
-            if intervals[i][1] > intervals[i+1][0]:
-               count += 1
-               intervals[i+1][1] = min(intervals[i][1], intervals[i+1][1])
+            if last_end > intervals[i][0]:
+                count += 1
+                last_end = min(last_end, intervals[i][1])
+            else:
+                last_end = intervals[i][1]
             i += 1
         
         return count
