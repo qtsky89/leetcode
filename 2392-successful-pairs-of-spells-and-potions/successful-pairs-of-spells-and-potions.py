@@ -22,9 +22,7 @@ class Solution:
         #  0       2       4
         for i, s in enumerate(spells):
              # l = 0, r = 4
-            if spells[i] * potions[-1] < success:
-                continue
-            
+
             index = bisect.bisect_left(potions, success / s)
 
             counts[i] = len(potions) - index
