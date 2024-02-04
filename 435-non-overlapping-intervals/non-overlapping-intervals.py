@@ -1,30 +1,43 @@
-def key_function(x: list[int]):
-    return x[0]
-
-
 class Solution:
     def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
         '''
-        intervals[i] = [start, end]
+        intervals
+    
+        intervals[i] = 
 
-        1 -> 2 -> 3 -> 4 
+        
 
+        exmaple1.
+
+            
+                        <          >
+                    <                   >
+                <      >
+            <               >      
+        0   1   2   3   4   5   6   7   8   9  10
+
+        count += 1
+
+        [1, 5] [2, 4] [3, 8] [3, 10] [4, 7]   count = 1
+
+        step1. sort
+        step2. using for loop, if overlapped, remove the end is bigger one
         '''
 
-        intervals.sort(key=key_function)
+        if len(intervals) == 1:
+            return 0
+
+        intervals.sort()
         
-        removal_count = 0
-        i = 1
-
-        end_value = intervals[0][1]
-
-        while i <= len(intervals)-1:
-            # overlapped with next interval
-            if end_value > intervals[i][0]:
-                end_value = min(end_value, intervals[i][1])
-                removal_count += 1
-            else:
-                end_value = intervals[i][1]
+        count = 0
+        i = 0
+        while i <= len(intervals)-2:
+            # check is overlapped ?
+            if intervals[i][1] > intervals[i+1][0]:
+               count += 1
+               intervals[i+1][1] = min(intervals[i][1], intervals[i+1][1])
             i += 1
-        return removal_count
-                
+        
+        return count
+
+        
