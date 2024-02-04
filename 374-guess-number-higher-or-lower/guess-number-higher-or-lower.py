@@ -7,25 +7,26 @@
 
 class Solution:
     def guessNumber(self, n: int) -> int:
-        '''
-        n = 10   pick = 3
-        1 2 3 4 5 6 7 8 9 10
         
-        1. 
-            mid = 11 // 2 => 5
-            
+        '''
+        1. mid => (start + end) // 2
+           n = 5 guess => -1
+           6 ~ 10 16 // 2 => 8
+           n = 8 guess => -1
+           6 ~ 7
+           ..   guess = > 0
         '''
 
-        first, end = 1, n
-        while True:
-            mid = (first + end) // 2
-            
-            res = guess(mid)
+        l, r = 1, n
 
-            if res == 0: # answer
+        while l <= r:
+            mid = (l + r) // 2
+
+            tmp = guess(mid)
+
+            if tmp == 1:
+                l = mid+1
+            elif tmp == -1:
+                r = mid-1
+            else:
                 return mid
-            elif res == -1: # guess is higher
-                end = mid - 1
-            else:  # guess is less
-                first = mid+1
-                
