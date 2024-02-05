@@ -1,67 +1,50 @@
 class Solution:
     def letterCombinations(self, digits: str) -> List[str]:
         '''
-        23
-        ad, ae, af
-        bd, be, bf
-        cd, ce, cf
+        digits = "23"
 
-        key value
-        2   [a, b, c]
-        3   [d, e, f]
-
-
-        1. make these map
-        2. using queue
-        3. get result until they use all digits
+        step1. make hash map
+        {
+            2 : [a,b,c]
+            3
+            4
+            5
+            6
+            7
+            8
+            9
+        }
         '''
-
-        if not digits:
+        if digits == "":
             return []
 
-        # 1. make these map
-        phone_map = {
-            2: ['a', 'b', 'c'],
-            3: ['d', 'e', 'f'],
-            4: ['g', 'h', 'i'],
-            5: ['j', 'k', 'l'],
-            6: ['m', 'n', 'o'],
-            7: ['p', 'q', 'r', 's'],
-            8: ['t', 'u', 'v'],
-            9: ['w', 'x', 'y', 'z']
+        digit_letter_map = {
+            '2' : ['a', 'b', 'c'],
+            '3' : ['d', 'e', 'f'],
+            '4' : ['g', 'h', 'i'],
+            '5' : ['j', 'k', 'l'],
+            '6' : ['m', 'n', 'o'],
+            '7' : ['p', 'q', 'r', 's'],
+            '8' : ['t', 'u', 'v'],
+            '9' : ['w', 'x', 'y', 'z'],
         }
 
-        # 2. using queue
-        q = deque()
-        # digits[i] = 2
-        for alphabet in phone_map[int(digits[0])]:
-            # alphabet = a, b, c...
-            q.append(alphabet)
+        q = deque([""])
 
-        # 3. get result until they use all digits
         ret = []
         while q:
-            # item = a
-            alphabets = q.popleft()
+            item = q.popleft()
 
-            if len(alphabets) == len(digits):
-                ret.append(alphabets)
+            if len(item) == len(digits):
+                ret.append(item)
                 continue
-                
-            current_index = len(alphabets)-1
-            for new_alphabet in phone_map[int(digits[current_index+1])]:
-                q.append(alphabets + new_alphabet)
-        
+            
+            # len(item) => 0
+
+            # char => a, b, c...
+            i = len(item)
+            for char in digit_letter_map[digits[i]]:
+                q.append(item + char)
         return ret
-            
-
-            
-
-
-
-
-
-
-
-
         
+            
