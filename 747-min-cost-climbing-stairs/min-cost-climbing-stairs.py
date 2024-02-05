@@ -1,41 +1,24 @@
 class Solution:
-
+    def __init__(self):
+        self._cache = {0:0, 1:0}
 
     def minCostClimbingStairs(self, cost: List[int]) -> int:
         '''
-        cost = [1,100,1,1,1,100,1,1,100,1]
-
-        10 root
-        9
-        8
-        7
-        6
-        5
-        4
-        3
-        2 1
-        1 start
-        0 start
-        
-        to get 2 index => min(1, 100)
-        to get 3 index => dp(2) + 
-
-
-        dp(3) = min (dp(2) + cost[2], dp(1) + cost[1])
-        
-        ...
-
-        dp(n) = min(dp[n-1] + cost[n-1], dp[n-2] + cost[n-2])
+        0   1   2  3
+cost    10  15  20           => 15
+                             => 10 + 20 ...
+                             => 10 + 15 + 20 
+       dp[0] => 0
+       dp[1] => 0
+       dp[2] => min(dp[0] + costs[0], dp[1] + costs[1])
+       dp[3] => min(dp[1] + costs[1], dp[2] + costs[1])
+       ...
+       dp[n] => min(dp[n-2] + costs[n-2], dp[n-1] + costs[n-1])
         '''
 
+        def dp(i : int) -> int:
+            if i not in self._cache:
+                self._cache[i] = min(dp(i-2) + cost[i-2], dp(i-1) + cost[i-1])
+            return self._cache[i]
             
-        cache: dict[int, int] = {0: 0, 1: 0}
-
-        def dp(n: int) -> int:
-            if n not in cache:
-                cache[n] = min(dp(n-1) + cost[n-1], dp(n-2) + cost[n-2])
-            
-            return cache[n]
-        
         return dp(len(cost))
-        
