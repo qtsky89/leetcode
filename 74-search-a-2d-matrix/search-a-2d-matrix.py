@@ -1,37 +1,33 @@
 class Solution:
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
-        '''
-         1  3  5  7
-        10 11 16 20
-        23 30 34 60
+        cols = [matrix[i][0]  for i in range(len(matrix))]
 
+        base_row = 0
 
-        # solution1. brute force way
+        i, j = 0, len(matrix)-1
+        while i <= j:
+            mid = (i+j) // 2
 
-        # solution2. 16
-
-        interation1.
-            matrix[0][0] == target?
-
-            target > matrix[0][0]
-                matrix[0][1] matrix[1][0]
-            
-            1 -> 10 -> 11 -> 16
-        '''
-        
-        q = deque([[0, 0]])
-        
-        while q:
-            i, j = q.popleft()
-
-            if matrix[i][j] == target:
+            if matrix[mid][0] == target:
                 return True
             
-            # TODO. check i+1
-            if i+1 <= len(matrix)-1 and target >= matrix[i+1][j]:
-                q.append([i+1, j])
-            elif j+1 <= len(matrix[0])-1 and target >= matrix[i][j+1]:
-                q.append([i, j+1])
+            if (matrix[mid][0] < target and mid == len(matrix)-1) or (matrix[mid][0] < target < matrix[mid+1][0]):
+                base_row = mid
+                break
+            
+            if target > matrix[mid][0]:
+                i = mid+1
+            else:
+                j = mid-1
         
-        return False
+        i, j = 0, len(matrix[0])-1
+        while i <= j:
+            mid = (i + j) // 2
 
+            if matrix[base_row][mid] == target:
+                return True
+            elif target > matrix[base_row][mid]:
+                i = mid + 1
+            else:
+                j = mid -1
+        return False
