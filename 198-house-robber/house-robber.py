@@ -1,36 +1,31 @@
 class Solution:
     def rob(self, nums: List[int]) -> int:
         '''
-        nums = [1, 2, 3, 1]
-                ^     ^      4
-                   ^     ^   3
-                ^        ^   2
-        
-        nums = [2, 7, 9, 3, 1]
-                ^     ^     ^
+        nums(money) = [1   2   3   1]
+                       ^
 
         dp[0] = 1
         dp[1] = 2
+        dp[2] = max( dp[0] + nums[2], dp[1])
+        dp[3] = max( dp[1] + nums[3], dp[2]  )
+            ...
 
-        dp[n] = max(dp[n-1], dp[n-2] + nums[n])
-
-        dp[2] = 1+3 or 2 => 4
-        dp[3] = 2 + 1 or 4 => 4
+        return dp[n-1]
         '''
 
-        # manage edge case
-        if len(nums) == 1:
-            return nums[0]
-        elif len(nums) == 2:
-            return max(nums[0], nums[1])
-
         dp = [0] * len(nums)
+        if len(dp) == 1:
+            return nums[0]
+        elif len(dp) == 2 :
+            return max(nums[0], nums[1])
+        
         dp[0], dp[1] = nums[0], nums[1]
         
-        for i in range(2, len(nums)):
-            tmp = [dp[i-1], dp[i-2] + nums[i]]
-            if i-3 >= 0:
-                tmp.append(dp[i-3] + nums[i])
-            dp[i] = max(tmp)
+        for i in range(2, len(dp)):            
+            if i >= 3:
+                dp[i] = max(dp[i-3] + nums[i], dp[i-2] + nums[i], dp[i-1])
+            else:
+                dp[i] = max(dp[i-2] + nums[i], dp[i-1])
+
         
-        return dp[-1]
+        return max(dp)
