@@ -32,9 +32,11 @@ class Solution:
             s, f = s.next, f.next.next
         
         # 2. reverse the right nodes
-        # 1->2->3->4->5
+        # 1<-2->3->4
+        second = s.next
+        s.next = None
 
-        prev, p = None, s
+        prev, p = None, second
         while p:
             tmp = p.next
             p.next = prev
@@ -46,11 +48,22 @@ class Solution:
         while p1 and p2:
             tmp1, tmp2 = p1.next, p2.next
 
-            p1.next, p2.next = p2, tmp1
+            ret_p.next = p1
+            ret_p = ret_p.next
+
+            ret_p.next = p2
+            ret_p = ret_p.next
 
             p1, p2 = tmp1, tmp2
 
-        return head
+        while p1:
+            tmp1 = p1.next
+            ret_p.next = p1
+            ret_p = ret_p.next
+
+            p1 = tmp1
+
+        return ret_p.next
 
 
             
