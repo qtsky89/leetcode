@@ -5,29 +5,27 @@
 #         self.left = left
 #         self.right = right
 class Solution:
+    def is_identical(self, root: TreeNode, subRoot: TreeNode) -> bool:
+        if not root and subRoot:
+            return False
+        elif root and not subRoot:
+            return False
+        elif not root and not subRoot:
+            return True
+        
+        return root.val == subRoot.val and self.is_identical(root.left, subRoot.left) and self.is_identical(root.right, subRoot.right)
+
     def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
-        '''
-        1. let's find subRoot in root
-        2. if I coulnd't find the subRoot then reutrn False
-        3. if I could find that subRoot, check it's childrens are all same
-        '''
-
-        def dfs(node: TreeNode) -> bool:
-            if not node:
-                return False
-            
-            return isSame(node, subRoot) or dfs(node.left) or dfs(node.right)
-
-        # if there is subRoot's value in root
-        def isSame(node: TreeNode, sub_node: TreeNode) -> bool:
-            if node and not sub_node:
-                return False
-            elif not node and sub_node:
-                return False
-            elif not node and not sub_node:
+        if not root and subRoot:
+            return False
+        elif root and not subRoot:
+            return False
+        elif not root and not subRoot:
+            return True
+        
+        if root.val == subRoot.val:
+            if self.is_identical(root, subRoot):
                 return True
-            
-            return node.val == sub_node.val and isSame(node.left, sub_node.left) and isSame(node.right, sub_node.right)
+        
+        return self.isSubtree(root.left, subRoot) or self.isSubtree(root.right, subRoot)
 
-            
-        return dfs(root)
