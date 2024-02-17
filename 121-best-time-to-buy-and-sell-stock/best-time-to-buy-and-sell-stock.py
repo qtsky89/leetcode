@@ -15,8 +15,6 @@ class Solution:
         max_profit = 0
         for i in range(len(prices)):
             max_profit = max(max_profit, max_prices[i] - prices[i])
-        
-        print(max_prices)
-        
+   
         return max_profit
             
