@@ -1,38 +1,25 @@
 class Solution:
-    def __init__(self):
-        self._vowels = "aeiouAEIOU"
-
-    def reverseVowels(self, s: str) -> str:
+    def reverseVowels(self, string: str) -> str:
         '''
-        reverse only a e i o u
-
-        l e e t c o d e
-          ^           ^
-
-        case1. if pointer represent not vowel then, skip it
-        case2. if it are both vowel than switch with the other pointer
-        until the pointer met each other
+        s = ' h e l l o A d'
+                ^       ^
         '''
 
-        ret = list(s)
-        l, r = 0, len(ret)-1
-        
-        while l < r:
-            # switch it!
-            if ret[l] in self._vowels and ret[r] in self._vowels:
-                ret[l], ret[r] = ret[r], ret[l]
-                l += 1
-                r -= 1
-            elif ret[l] not in self._vowels:
-                l += 1
-            elif ret[r] not in self._vowels:
-                r -= 1
-            else:
-                l += 1
-                r -= 1
-        return ''.join(ret)
+        s = list(string)
 
+        p1, p2 = 0, len(s)-1
+
+        while p1 < p2:
+            while p1 <= len(s)-1 and s[p1] not in 'aeiouAEIOU':
+                p1 += 1
             
+            while p2 >= 0 and s[p2] not in 'aeiouAEIOU':
+                p2 -= 1
+            
+            if p1 < p2:
+                s[p1], s[p2] = s[p2], s[p1]
 
-
+            p1, p2 = p1+1, p2-1
         
+        return ''.join(s)
+            
