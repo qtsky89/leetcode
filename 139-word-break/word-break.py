@@ -5,7 +5,7 @@ class Solution:
                      ^       ^
         '''
 
-        q = [0]
+        q = deque([0])
 
         visited = set()
         while q:
