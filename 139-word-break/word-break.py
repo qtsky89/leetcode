@@ -1,10 +1,8 @@
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         '''
-        s = leetcode, worDict = ["leet", "code", "le", "xxx"]
-            ^   
-                ^   ^
-              ^  
+        s = 'l e e t c o d e' wordDict = ['leet', 'code']
+                     ^       ^
         '''
 
         q = [0]
@@ -12,13 +10,19 @@ class Solution:
         visited = set()
         while q:
             i = q.pop()
-            
+            visited.add(i)
+
             if i == len(s):
                 return True
-
+            elif i > len(s):
+                continue
+            
             for word in wordDict:
-                if s[i:i+len(word)] == word and (i+len(word)) not in visited:
-                    visited.add(i)
-                    q.append(i + len(word))
-        
+                if s[i:i+len(word)] == word and i+len(word) not in visited:
+                    q.append(i+len(word))
         return False
+
+        
+        
+
+        
