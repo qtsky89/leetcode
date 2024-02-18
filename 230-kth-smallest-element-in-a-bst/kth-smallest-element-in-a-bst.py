@@ -7,35 +7,26 @@
 class Solution:
     def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
         '''
-        BST using inOrder approach
-
-                    3
-                1        4
-
-             => V1 -> V3 -> V4
+        inorder
         '''
-        
-        ret = -float('inf')
 
         count = 0
-        def dfs(node: TreeNode | None):
-            nonlocal ret
-            if not node or ret != -float('inf'):
-                return None
-        
-            dfs(node.left)
+        ret = 0
+        def dfs(node: TreeNode):
+            if not node:
+                return
             
+            dfs(node.left)
+
             nonlocal count
             count += 1
 
             if count == k:
+                nonlocal ret
                 ret = node.val
 
             dfs(node.right)
-        
+            
 
         dfs(root)
-
         return ret
-
-
