@@ -1,47 +1,23 @@
 class Solution:
     def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
         '''
-        intervals
-    
-        intervals[i] = 
-
-        
-
-        exmaple1.
-
-            
-                        <          >
-                    <                   >
-                <      >
-            <               >      
-        0   1   2   3   4   5   6   7   8   9  10
-
-        count += 1
-
-        [1, 5] [2, 4] [3, 8] [3, 10] [4, 7]   count = 1
-
-        step1. sort
-        step2. using for loop, if overlapped, remove the end is bigger one
+        1. sort by start time
+        2. if there is overlap then, increase count += 1, keep min endtime
+           else 
         '''
 
-        if len(intervals) == 1:
-            return 0
+        # 1. sort by start time
+        intervals.sort(key=lambda x:x[0])
 
-        intervals.sort()
-        
+        last_end_time = intervals[0][1]
         count = 0
-        i = 1
-
-        last_end = intervals[0][1]
-        while i <= len(intervals)-1:
-            # check is overlapped ?
-            if last_end > intervals[i][0]:
+        for i in range(1, len(intervals)):
+            # previous interval endtime >= current interval start time
+            # there is overlap
+            if last_end_time > intervals[i][0]:
                 count += 1
-                last_end = min(last_end, intervals[i][1])
+                last_end_time = min(last_end_time, intervals[i][1])
             else:
-                last_end = intervals[i][1]
-            i += 1
-        
+                last_end_time = intervals[i][1]
         return count
 
-        
