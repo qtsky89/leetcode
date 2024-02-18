@@ -1,21 +1,10 @@
 class Solution:
     def reverseWords(self, s: str) -> str:
-        '''
-        s = "   hellow  world   "
-        ret = "world hello"
-
-
-        s = "the sky is blue"
-        ret = "blue is sky the"
-        '''
-        
-        tmp = s.split(" ")[::-1]
+        s_list = s.split(' ')
 
         ret = []
-        for t in tmp:
-            if t != "":
-                ret.append(t)
-        return " ".join(ret)
-
+        for string in s_list:
+            if string != "":
+                ret.append(string)
         
-        
+        return ' '.join(ret[::-1])
