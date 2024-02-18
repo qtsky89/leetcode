@@ -7,26 +7,25 @@
 class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
         '''
-        preorder
-        inorder
+        example1.
         '''
 
         if not inorder:
             return None
-        
-        # root = 3
-        root = TreeNode(preorder.pop(0))
 
-        # inorder = [9] 3 [15 20 7]
-                        
-        i=0
-        while i <= len(inorder)-1:
-            if inorder[i] == root.val:
+        # root
+        node = TreeNode(preorder.pop(0))
+
+        # find that value in inorder
+        index = 0
+        for i in range(len(inorder)):
+            if inorder[i] == node.val:
+                index = i
                 break
-            i+=1
-        
-        root.left = self.buildTree(preorder, inorder[:i])
-        root.right = self.buildTree(preorder, inorder[i+1:])
 
-        return root
+        node.left = self.buildTree(preorder, inorder[:index])
+        node.right = self.buildTree(preorder, inorder[index+1:])
+
+        return node
+
         
