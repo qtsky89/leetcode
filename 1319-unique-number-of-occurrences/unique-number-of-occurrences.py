@@ -1,12 +1,29 @@
 class Solution:
     def uniqueOccurrences(self, arr: List[int]) -> bool:
-        hash_map = {}
+        '''
+        arr = [1, 2, 2, 1, 1, 3]
 
-        for i in range(len(arr)):
-            if arr[i] in hash_map:
-                hash_map[arr[i]] += 1
+            1 : 3
+            2 : 2
+            3 : 1  return True
+
+        arr = [1,2]
+           
+            1 : 1
+            2 : 1
+                  return False
+        '''
+
+        c = Counter(arr)
+        
+        visited = set()
+
+        for v in c.values():
+            if v in visited:
+                return False
             else:
-                hash_map[arr[i]] = 1
+                visited.add(v)
         
-        return len(set(hash_map.values())) == len(list(hash_map.values()))
-        
+        return True
+
+
