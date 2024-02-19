@@ -1,19 +1,29 @@
-from collections import Counter
-
 class Solution:
     def closeStrings(self, word1: str, word2: str) -> bool:
         '''
-        word1 = c a b b b a      a:2 b:3 c: 1 , 1, 2, 3
-        word2 = a b b c c c      a:1 b:2 c: 3 , 1, 2, 3
+        Input: word1 = "b c a", word2 = "b c a"
+        Output: true
+
+        Input: word1 = "a", word2 = "aa"
+        Output: false
+
+        Input: word1 = "c a b b b a", word2 = "a b b c c c"
+        word1 = {  
+            a : 2
+            b : 3
+            c : 1
+        }
+        word2 = {
+            a: 1
+            b: 2
+            c: 3
+        }
+
+        Output: true
+
         '''
 
-        if len(word1) != len(word2):
-            return False
+        word1_hashmap = Counter(word1)
+        word2_hashmap = Counter(word2)
 
-        w1 = Counter(word1)
-        w2 = Counter(word2)
-
-        condition1 = sorted(w1.values()) == sorted(w2.values())
-        condition2 = sorted(w1.keys()) == sorted(w2.keys())
-
-        return condition1 and condition2
+        return sorted(word1_hashmap.keys()) == sorted(word2_hashmap.keys())    and sorted(word1_hashmap.values()) == sorted(word2_hashmap.values())
