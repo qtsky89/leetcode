@@ -22,8 +22,7 @@ class Solution:
             factor = len(string) // len(sub_str)
 
             return sub_str * factor == string
-            
-        
+
         i = 0
         ret = ''
         while i <= len(small_str)-1:
