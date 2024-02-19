@@ -1,37 +1,33 @@
 class Solution:
     def equalPairs(self, grid: List[List[int]]) -> int:
         '''
-        11 1
-        1 11
+        grid = 3 2 1
+               1 7 6
+               2 7 7
+        
+        s = set(
+        (3, 2, 1)
+        (1, 7, 6)
+        (2, 7, 7))
 
-
-        visited = {'321', '176', '277'}       
+        (3, 1, 2) -> no
+        (2, 7, 7) -> yes  count+=1
+        (1, 6, 7) -> no
+        
+        return count
         '''
 
-        row_count = {}
-        for li in grid:
-            key = tuple(li)
+        visited = defaultdict(int)
+        for i in range(len(grid)):
+            visited[tuple(grid[i])] += 1
 
-            if key in row_count:
-                row_count[key] += 1
-            else:
-                row_count[key] = 1
-        
-        
-        col_count = {}
+        count = 0
         for j in range(len(grid[0])):
+            # 3, 2, 1
             tmp = []
             for i in range(len(grid)):
                 tmp.append(grid[i][j])
             
-            key = tuple(tmp)
-            if key in col_count:
-                col_count[key] += 1
-            else:
-                col_count[key] = 1
-
-        count = 0
-        for key in row_count:
-            if key in col_count:
-                count += row_count[key] * col_count[key]
+            if tuple(tmp) in visited:
+                count += visited[tuple(tmp)]
         return count
