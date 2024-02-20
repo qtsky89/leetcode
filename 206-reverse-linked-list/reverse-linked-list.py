@@ -6,23 +6,21 @@
 class Solution:
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         '''
-        head =   1 -> 2 -> 3-> 4 -> 5
-                 p   p_n
-                                    p  p_n
+     None ->  1 -> 2 -> 3-> 4 -> 5
+        ^ <- ^
+                             ^ <- ^
+                                  ^ <- ^
 
-        result=  1 <- 2 <- 3 <- 4 <- 5
-                                     ^
-        return 5
+        5 -> 4 -> 3 -> 2 -> 1
+        ^
         '''
 
-        if not head:
-            return
+        prev, p = None, head
+        
+        while p:
+            tmp = p.next
+            p.next = prev
+            prev, p = p, tmp
+        
+        return prev
 
-        p, p_n = None, head
-
-        while p_n:
-            tmp = p_n.next
-            p_n.next = p
-
-            p, p_n = p_n, tmp
-        return p
