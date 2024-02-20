@@ -7,37 +7,28 @@
 class Solution:
     def goodNodes(self, root: TreeNode) -> int:
         '''
-                3
-
-            1        4
-        
-        3            1     5
-
-
-        preorder : 3 -> 1 -> 3 -> 4 -> 1 -> 5
-                                       ^
-                                    3 -> 4 -> 1
-        we need to keep max node val through path.
-
-        if node.val >= max_val:
-            count += 1
+        1. make dfs function to travel. but keep the maximum value of the path
+        2. if current_node value is bigger or same the maximum value count += 1
+        3. return count
         '''
 
-        count = 0
+        if not root:
+            return 0
 
-        def dfs(node: TreeNode, max_val):
+
+        count = 0
+        def dfs(node: TreeNode, maximum_value: int):
             if not node:
                 return
             
-            nonlocal count
-            if node.val >= max_val:
+            # 2. if current_node value is bigger or same the maximum value count += 1
+            if node.val >= maximum_value:
+                nonlocal count
                 count += 1
+            
+            dfs(node.left, max(node.val, maximum_value))
+            dfs(node.right, max(node.val, maximum_value))
 
-            max_val = max(max_val, node.val)
+        dfs(root, root.val)
 
-            dfs(node.left, max_val)
-            dfs(node.right, max_val)
-        
-        dfs(root, -float('inf'))
-        
         return count
