@@ -6,45 +6,42 @@
 class Solution:
     def deleteMiddle(self, head: Optional[ListNode]) -> Optional[ListNode]:
         '''
-        example1.
-        
-        head = 0 -> 1 -> 4 -> 7 -> 1 -> 2 -> 6
-              ^^
-                    ^    ^
-                         ^         ^
-                              ^              ^
-        
+        example1. 0                 => None
+        example2. 0 -> 1            => 0
+                       ^
+        example3. 0 -> 1 -> 2       => 0 -> 2
+                       ^
+        example4. 0 -> 1 -> 2 -> 3  => 0 -> 1 -> 3
+                            ^
 
-        head = 1 -> 2 -> 3 -> 4
-               ^^
-                    ^    ^
-                         ^        ^
-
-        
-        head = 2 -> 1
-               ^^
-                    ^   ^
-
-        ending term.    
-            fast pointer ==> None
-            fast pointer ==> end index
-
-        remove slow pointer ( to do that we need to keep slow_prev_pointer )
-
-        middle_index = (len(head)) // 2 
-
+                  0 -> 1 -> 2 -> 3
+                  ^ ^
+                       ^    ^
+                            ^      ^
+                       
+                     
+                
+            dummy->0 -> 1 -> 2 -> 3 -> 4
+                ^ ^^
+                       ^    ^
+                            ^         ^
         '''
 
-        if head is None or head.next is None:
-            return None
+        dummy = ListNode(None, None)
+        dummy.next = head
+
+        slow_prev, slow, fast = dummy, head, head
         
-        slow_prev_p, slow_p, fast_p = head, head, head
-
-        while fast_p and fast_p.next:
-            slow_prev_p, slow_p = slow_p, slow_p.next
-            fast_p = fast_p.next.next
+        while fast and fast.next:
+            slow_prev, slow, fast = slow, slow.next, fast.next.next
         
-        slow_prev_p.next = slow_p.next
+        # slow is the one we want to delete
+        slow_prev.next = slow.next
 
-        return head
+        return dummy.next
 
+
+
+        
+
+        
