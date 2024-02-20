@@ -6,62 +6,36 @@
 class Solution:
     def pairSum(self, head: Optional[ListNode]) -> int:
         '''
-        head = 10 -> 5 -> 4 -> 2 -> 1 -> 20
+        example1.
+            5 -> 4 -> 10 <- 1 <- 20 <- 23
+                                        ^    ^
 
-        ret = [10, 5, 4, 2, 1, 20]
+            1. find the middle one
+            2. after middle one reverse next pointer
+            3. interate both list, update the maximum twin sum
+            4. return that maximum twin sum
+        '''
 
-        max(10 + 20, 5 + 1, 4+ 2) = > 30
+        s_prev, s, f = None, head, head
 
+        # 1. find the middle one
+        while f and f.next:
+            s_prev, s, f = s, s.next, f.next.next
         
+        # 2. after middle one reverse next pointer
+        s_prev.next = None
+        s_prev = None
+        while s:
+            tmp = s.next
+            s.next = s_prev
+            s_prev, s = s, tmp
 
-        5 -> 4    2 -> 1
-                  2 <- 1
-        ^              ^
+        # 3. interate both list, update the maximum twin sum
+        p1, p2 = head, s_prev
 
-        step 1. find middle index
-        step 2. reverse the right list
-        step 3. get the maximum values
-        '''
-
-        # step 1. find middle index
-        '''
-        5 -> 4 -> 2 -> 1
-        sf
-             s    f
-             sp   s      f
-        '''
-        
-        slow_p_prev, slow_p, fast_p = head, head, head
-        while fast_p and fast_p.next:
-            slow_p_prev = slow_p
-            slow_p = slow_p.next
-            fast_p = fast_p.next.next
-        
-        slow_p_prev.next = None
-
-        # step2 reverse the right list
-        '''
-        2 <- 1
-        '''
-        p_prev, p = None, slow_p
-
-        while p:
-            tmp = p.next
-            p.next = p_prev
-            p_prev, p = p, tmp
-        
-        # step 3
-        max_val = -float('inf')
-        p1, p2 = head, p_prev
-
+        max_twin_sum = 0
         while p1 and p2:
-            max_val = max(max_val, p1.val + p2.val)
-            p1 = p1.next
-            p2 = p2.next
+            max_twin_sum = max(max_twin_sum, p1.val + p2.val)
+            p1, p2 = p1.next, p2.next
         
-        return max_val
-
-        
-        
-
-
+        return max_twin_sum
