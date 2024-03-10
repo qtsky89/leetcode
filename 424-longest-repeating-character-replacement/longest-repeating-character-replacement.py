@@ -11,7 +11,7 @@ class Solution:
         counter = [0] * 26
         counter[ord(s[p1]) - ord('A')] += 1
         max_ret = 0
-        while p1 <= p2 <= len(s)-1:
+        while p2 <= len(s)-1:
             # check valid
             most_count = max(counter)
             if (p2-p1+1 - most_count) > k:
