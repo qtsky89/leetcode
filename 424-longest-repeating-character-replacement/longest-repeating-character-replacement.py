@@ -1,59 +1,26 @@
 class Solution:
     def characterReplacement(self, s: str, k: int) -> int:
         '''
-        s: str, k: int
-
-        example1.
-            s = "ABAB" k = 2
-                 AAAA
-                 BBBB   => 4
-        
-        example2.
-            s= "AABABBA"  k = 1
-                AAAA => 4
-
-
-        s = "A A A B A B B A C C A A B"
-            i,j
-        longest = 6
-        
-        k = 2 -> 1
-            1 -> 0
+        s =  A   A   B   A   B   B   A                valid : (p2-p1+1) - most_count >= k 
+            ^^                            0-0+1 - 1 >= k    valid=True, res = 1
+            ^    ^                        1-0+1 - 2 >= k    valid = True res = 2
         '''
 
-        i, j = 0, 0
-        longest_count = 0
-        '''
-        {
-            A : 1
-        }
-        '''
-        c = Counter(s[0])
-        while j <= len(s)-1:
-            # valid check
-            most_char_count = max(c.values())
-            # not valid
-            if (j-i+1) - most_char_count > k:
-                c[s[i]] -= 1
-                i += 1
-                continue
+        p1, p2 = 0, 0
 
-            longest_count = max(longest_count, j - i + 1)
-
-            # moving forward
-            if j+1 <= len(s) -1:
-                c[s[j+1]] += 1
-            j += 1
-        return longest_count
-        
-                
+        counter = [0] * 26
+        counter[ord(s[p1]) - ord('A')] += 1
+        max_ret = 0
+        while p1 <= p2 <= len(s)-1:
+            # check valid
+            most_count = max(counter)
+            if (p2-p1+1 - most_count) > k:
+                counter[ord(s[p1]) - ord('A')] -= 1
+                p1 += 1
+            else:
+                max_ret = max(max_ret, p2-p1+1)
+                p2 += 1
+                if p2 <= len(s)-1:
+                    counter[ord(s[p2]) - ord('A')] += 1
+        return max_ret
             
-            
-
-
-
-
-            
-            
-
-
