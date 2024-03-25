@@ -37,8 +37,8 @@ class Solution:
             # collision happen
             while stack and stack[-1][2] <= datas[i][2]:
                 stack.pop()
-            else:
-                stack.append(datas[i])
+
+            stack.append(datas[i])
         
         return len(stack)
             
