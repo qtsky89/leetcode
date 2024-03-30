@@ -1,47 +1,43 @@
 class Solution:
-    def decodeString(self, s: str) -> str:
+    def decodeString(self, strings: str) -> str:
         '''
+        3[a]2[bc]
+        => aaabcbc
 
-        [ ]
-        1. 
-        stack = [2 bc    ]
-        ret = [a a a bc bc]
+        3[a41[cdd]]
+        pop trigger => ']'
 
-        2. 
-        s = 3[a2[c]]
+        stack = 3 [ a cddcdd...]
 
-        char, [ push to stack
-        ] pop out stack
-
-        stack = [acc acc acc]
-        return stack
         '''
+        # stack = 3 [ a 41 
+        stack: list[str | int] = []
 
-        stack: list[str] = []
-
-        i = 0 
-        # 3 [a 2 [c]]
-        while i <= len(s)-1:
-            if s[i].isdigit():
-                tmp = []
-
-                while s[i].isdigit():
-                    tmp.append(s[i])
+        i = 0
+        while i <= len(strings)-1:
+            if strings[i].isdigit():
+                tmp = ''
+                while strings[i].isdigit():
+                    tmp += strings[i]
                     i += 1
-                stack.append(''.join(tmp))
-            elif s[i] == ']':
-                # c
-                tmp = []
+                stack.append(int(tmp))
+                continue
+            
+            # do something
+            if strings[i] == ']':
+                tmp = ''
                 while stack and stack[-1] != '[':
-                    tmp.append(stack.pop())
-                stack.pop()
-                # 3
-                count = stack.pop()
-                stack.append(''.join(tmp[::-1] * int(count) ))
-                i+=1 
+                    tmp = stack.pop() + tmp
+                
+                stack.pop() # remove '['
+                stack.append(tmp * stack.pop())
             else:
-                stack.append(s[i])
-                i+=1
+                stack.append(strings[i])
+            
+            i += 1
+        
         return ''.join(stack)
-                
-                
+            
+
+
+            
