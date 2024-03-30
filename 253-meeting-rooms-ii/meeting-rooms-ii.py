@@ -1,35 +1,23 @@
 class Solution:
     def minMeetingRooms(self, intervals: List[List[int]]) -> int:
         '''
-        min_end_heap = []
+        [0, 30]
+        [5, 10]
+        [15, 20]
+        '''
 
+        intervals.sort()
 
-        1. sort by start time
-        2. keep min_end_heap
-        3. whenever new interval comes in, check with min end value
-            if min_end_value <= new_interval_start:
-               i don't need meeting room
-            else
-               i need new meeting room.
-            update min_end_value
-        '''    
+        end_time_heap = []
+        count = 0
 
-        # 1. sort by start time
-        intervals.sort(key=lambda x:x[0])
-
-        # 2. keep min_end_heap
-        heap = [intervals[0][1]]
-
-        # 3. whenever new interval comes in, check with min end value
-        count = 1
-        for i in range(1, len(intervals)):
-            min_end_time = heap[0]
-            # i don't need meeting room
-            if min_end_time <= intervals[i][0]:
-                heapq.heappop(heap)
-            else: # i need new meeting room
+        for start, end in intervals:
+            # check I can reuse meeting room
+            if end_time_heap and end_time_heap[0] <= start:
+                heapq.heappop(end_time_heap)
+                heapq.heappush(end_time_heap, end)
+            else:
                 count += 1
-            heapq.heappush(heap, intervals[i][1])
+                heapq.heappush(end_time_heap, end)
         return count
-
-                
+        
