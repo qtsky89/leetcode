@@ -1,28 +1,26 @@
 class Solution:
-    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+    def wordBreak(self, s: str, word_dict: List[str]) -> bool:
         '''
-        s = 'l e e t c o d e' wordDict = ['leet', 'code']
-                     ^       ^
+        s = 'leetcode' word_dict = ['leet', 'code']
         '''
 
-        q = deque([0])
+        ret = False
 
         visited = set()
-        while q:
-            i = q.pop()
-            visited.add(i)
+        def dfs(current_word: str) -> None:
+            nonlocal ret
 
-            if i == len(s):
-                return True
-            elif i > len(s):
-                continue
+            if current_word in visited:
+                return
+            else:
+                visited.add(current_word)
+
+            if current_word == '':
+                ret = True
             
-            for word in wordDict:
-                if s[i:i+len(word)] == word and i+len(word) not in visited:
-                    q.append(i+len(word))
-        return False
+            for word in word_dict:
+                if current_word [:len(word)] == word:
+                    dfs(current_word[len(word):])
+        dfs(s)
 
-        
-        
-
-        
+        return ret
