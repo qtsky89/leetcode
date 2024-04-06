@@ -9,7 +9,7 @@ class Solution:
         while q:
             item = q.popleft()
 
-            ret.append(item)
+            ret.append(list(item))
 
             if len(item) == len(nums):
                 break
