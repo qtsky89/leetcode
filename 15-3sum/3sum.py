@@ -21,7 +21,7 @@ class Solution:
 
                 # bingo
                 if tmp == -nums[i]:
-                    key = ','.join([str(nums[i]), str(nums[j]), str(nums[k])])
+                    key = (nums[i], nums[j], nums[k])
                     if  key not in visited:
                         ret.append([nums[i], nums[j], nums[k]])
                         visited.add(key)
