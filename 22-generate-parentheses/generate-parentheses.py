@@ -1,37 +1,29 @@
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
         '''
-        n = 1
-        ()
-
-        n = 2
-        (())
-        ()()
+        generate parentheses
 
         n = 3
-        ((()))
-        ()()()
-        (()())
-        ()))((
-        '''
 
         
+        '''
+
         q = deque([['', 0, 0]])
 
         ret = []
         while q:
-            item, left, right = q.popleft()
+            current, left_count, right_count = q.popleft()
 
-            if len(item) > n*2 or left > n or right > n:
+            if left_count == right_count == n:
+                ret.append(current)
                 continue
-
-            if len(item) == n*2:
-                ret.append(item)
             
-            q.append([item+'(', left+1, right])
-
-            if right+1 <= left:
-                q.append([item+')', left, right+1])
+            if left_count > n:
+                continue
+            
+            if left_count > right_count:
+                q.append([current + ')', left_count, right_count+1])
+            q.append([current+'(', left_count+1, right_count])
         
         return ret
 
