@@ -1,28 +1,24 @@
-from collections import defaultdict
 
 class Solution:
     def topKFrequent(self, words: List[str], k: int) -> List[str]:
         '''
-        counter = {
+        c = {
             i : 2
             love : 2
-            ...
+            leetcode: 1
+            cofing: 1
         }
         '''
-        counter = defaultdict(int)
+        c = Counter(words)
 
-        for word in words:
-            counter[word] += 1
-        
         heap = []
-        for key in counter:
-            heapq.heappush(heap, [-counter[key], key])
+        for key in c:
+            heapq.heappush(heap, [-c[key], key])
+
         
         ret = []
-        for i in range(k):
-            ret.append(heapq.heappop(heap)[1])
-
+        while k > 0:
+            _, w = heappop(heap)
+            ret.append(w)
+            k -= 1
         return ret
-
-        
-        
