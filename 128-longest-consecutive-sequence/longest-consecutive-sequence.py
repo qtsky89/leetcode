@@ -1,46 +1,25 @@
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
         '''
+        nums = 100 4 200 1 3 2
 
-        [100, 4, 200, 1, 3, 2]
-
-        # step1 : make set
-        set(nums)
-
-        # step2: make hash_map
-        {
-            1 : 1
-            100 : 1
-            200 : 1
-        }
-
-        # step3. 
         '''
-        # step1 : make set
-        nums_set = set(nums)
 
-        # step2: make hash_map
-        hash_map = {}
+        visited = set(nums)
 
+        max_lengh = 0
+        count = 0 
         for i in range(len(nums)):
-            # it meas, it's starting number
-            if nums[i] - 1 not in nums_set:
-                hash_map[nums[i]] = 1
-
-        longest_num = 0
-        for key in hash_map:
-            i = key
-            while True:
-                if i + 1 in nums_set:
-                    hash_map[key] += 1
-                else:
-                    break
-                i += 1
+            if nums[i]-1 in visited:
+                continue
             
-            longest_num = max(longest_num, hash_map[key])
-        
-        return longest_num
-        
-
+            tmp = nums[i]
+            count = 0
+            while tmp in visited:
+                tmp += 1
+                count += 1
+            
+            max_lengh = max(max_lengh, count)
+        return max_lengh
                 
-        
+            
