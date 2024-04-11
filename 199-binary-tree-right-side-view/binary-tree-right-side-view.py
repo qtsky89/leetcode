@@ -4,51 +4,40 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-
-from collections import deque
 class Solution:
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
         '''
-          1          <-1
-        2   3        <-3
+           1
+          2 3
+         5 4 
 
-          5     4    <-4
+         ret = [[1], [2, 3], [5, 4]]
 
-        [ [1] , [2, 3], [5, 4] ]
-
-            1, 3, 4
+         [1, 3, 4]
         '''
 
         if not root:
-            return None
+            return []
 
         q = deque([[root, 0]])
 
-        tmp = []
-        '''
-        [ [1], [2, 3], [5, 4] ] => [1, 3, 4]
-        '''
+        ret = []
         while q:
-            item, level = q.popleft()
+            item, index = q.popleft()
 
-            if level == len(tmp):
-                tmp.append(item.val)
+            if index == len(ret):
+                ret.append([item.val])
             else:
-                tmp[level] = item.val
+                ret[index].append(item.val)
             
             if item.left:
-                q.append([item.left, level+1])
+                q.append([item.left, index+1])
             if item.right:
-                q.append([item.right, level+1])
+                q.append([item.right, index+1])
         
-        return tmp
+        filtered_ret = []
+        for li in ret:
+            filtered_ret.append(li[-1])
         
-        
-        
-
-        
-            
-            
-                
-            
+        return filtered_ret
         
