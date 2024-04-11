@@ -1,50 +1,46 @@
-from collections import deque
-
 class Solution:
     def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
         '''
-        1   2  3  4  5
-        6   7  8  9 10
-        11 12 13 14 15
-        16 17 18 19 20
-        21 22 23 24 25
-        
+        00->01->02->03
+                     v
+        10  11  12  13
+                     v
+        20  21  22  23
+                     v
+        30 < 31 < 32 < 33 
 
-        1 2 3 4 5 10 15 20 25 24 23 22 21 16 11 6 7 8 9 14 19 18 17 12 13
+        right
+        down
+        left
+        up
         '''
 
-        visited = set()
+        #                  R       D       L        U
+        direction_array = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
-        #              right    down   left      up
-        directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]
-
-        q = deque([[0, 0, 0]])
 
         ret = []
-        while q:
-            i, j, k = q.popleft()
+        visited = set()
+
+        def dfs(i: int, j: int, direction_index: int) -> None:
             visited.add((i, j))
             ret.append(matrix[i][j])
 
             if len(visited) == len(matrix) * len(matrix[0]):
-                return ret
+                return
 
-            next_i = i + directions[k][0]
-            next_j = j + directions[k][1]
+            next_i = i + direction_array[direction_index][0]
+            next_j = j + direction_array[direction_index][1]
 
-            if not(0 <= next_i <= len(matrix)-1) or not (0 <= next_j <= len(matrix[0])-1) or (next_i, next_j) in visited:
-                k += 1
-                k %= 4
+            if (next_i, next_j) in visited or not(0 <= next_i <= len(matrix)-1) or not(0 <= next_j <= len(matrix[0])-1):
+                direction_index = (direction_index+1) % 4
+                next_i = i + direction_array[direction_index][0]
+                next_j = j + direction_array[direction_index][1]
+
+            if (next_i, next_j) not in visited:
+                dfs(next_i, next_j, direction_index)
             
-            next_i = i + directions[k][0]
-            next_j = j + directions[k][1]
+        dfs(0, 0, 0)
 
-            q.append([next_i, next_j, k])
-
-            
-
-
-
-
-
+        return ret
         
