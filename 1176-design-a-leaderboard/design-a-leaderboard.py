@@ -1,39 +1,28 @@
-'''
-    {
-        1 : 244,
-        2 : 300,
-        3 : 150,
-        ...
-    }
-
-    [300, 2] [244, 1] [150, 3] ...
-    
-'''
-
-from collections import defaultdict
-
 class Leaderboard:
     def __init__(self):
-        self._board = defaultdict(int)
+        self.dic = {}
+
+    def addScore(self, playerId: int, score: int) -> None:
+        if playerId in self.dic:
+            self.dic[playerId] += score
+        else:
+            self.dic[playerId] = score
         
-    def addScore(self, player_id: int, score: int) -> None:
-        self._board[player_id] += score
-        
-    def top(self, k: int) -> int:
+    def top(self, K: int) -> int:
         heap = []
 
-        for value in self._board.values():
-            heapq.heappush(heap, -value)
+        for playerId in self.dic:
+            heapq.heappush(heap, [-self.dic[playerId], playerId])
         
         ret = 0
-        while k:
-            ret += -(heapq.heappop(heap))
-            k -= 1
+        while K > 0:
+            ret += (-heapq.heappop(heap)[0])
+            K -= 1
         
         return ret
 
-    def reset(self, player_id: int) -> None:
-        self._board[player_id] = 0
+    def reset(self, playerId: int) -> None:
+        del self.dic[playerId]
         
 
 
