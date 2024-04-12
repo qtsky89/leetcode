@@ -1,55 +1,56 @@
 class Solution:
     def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
         '''
-        a / b = 2
-        b / c = 3
+        a / b =  2.0
+        b / c = 3.0
 
-        queries 
-        a / c
-        b / a
-        a / e
-        a / a
-        x / x
-
-
-        {
-            a : [(b, 2)]
-            b : [(a, 1/2), (c, 3)]
-            c : [(a, 1/3)]
-        }
+        queries
+            a / c => ?
+            b / a =>
+            a / e =>
+            a / a =>
+            x / x =>
         '''
 
-        hash_map = defaultdict(list)
+        hash_table = defaultdict(list)
 
         for i in range(len(equations)):
-            start, end = equations[i]
-            value = values[i]
+            x, y = equations[i]
+            val = values[i]
 
-            hash_map[start].append((end, value))
-            hash_map[end].append((start, 1/value))
-                
-        q = deque()
-
-        ret = [-1.0] * len(queries)
-
-        for index, (start, end) in enumerate(queries):
-            q.append([start, end, start, 1.0, set(), index])
+            # x / y = val
+            hash_table[x].append([y, val])
+            hash_table[y].append([x, 1 / val])
         
+        q = deque()
+        for i, query in enumerate(queries):
+            # query = ['a', 'c']
+            start, end = query
+            
+            # claculated value = 1
+            q.append([start, end, i, 1, set()])
+        
+        ret = [-1] * len(queries)
         while q:
-            start, end, current_var, current_data, visited, index = q.popleft()
-            visited.add(current_var)
+            current_char, end_char, ret_index, current_cal, visited = q.popleft()
 
-            # end!
-            if current_var == end and current_var in hash_map:
-                ret[index] = current_data
+            if current_char == end_char and hash_table[current_char] != []:
+                ret[ret_index] = current_cal
                 continue
             
-            if current_var in hash_map:
-                for next_var, next_data in hash_map[current_var]:
-                    if next_var not in visited:
-                        q.append([start, end, next_var, current_data*next_data, set(visited), index])
+            visited.add(current_char)
+            
+            for next_char, val in hash_table[current_char]:
+                if next_char not in visited:
+                    q.append([next_char, end_char, ret_index, current_cal * val, set(visited)])
             
         return ret
+        
+        
+        
+        
+        
 
-            
-
+        
+        
+        
