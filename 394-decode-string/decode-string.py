@@ -1,43 +1,53 @@
 class Solution:
-    def decodeString(self, strings: str) -> str:
+    def decodeString(self, s: str) -> str:
         '''
-        3[a]2[bc]
-        => aaabcbc
+        k[encoded_string]
 
-        3[a41[cdd]]
-        pop trigger => ']'
-
-        stack = 3 [ a cddcdd...]
-
+        example1.
+            s = 3[a]2[bc]
+            ret = aaabcbc
+        
+        example2.
+            s = 13 [ a 2 [ c ] ]
+                               ^
+            
+            stack = accaccacc...
+                'acc' * 13
+        example3.
+            s = 2[abc]3[cd]ef
+            ret = abcabccdcdcdef
         '''
-        # stack = 3 [ a 41 
-        stack: list[str | int] = []
+
+        stack = []
 
         i = 0
-        while i <= len(strings)-1:
-            if strings[i].isdigit():
+        while i <= len(s)-1:
+            # handle digit
+            if s[i].isdigit():
                 tmp = ''
-                while strings[i].isdigit():
-                    tmp += strings[i]
+                while s[i] != '[':
+                    tmp += s[i]
                     i += 1
                 stack.append(int(tmp))
                 continue
             
-            # do something
-            if strings[i] == ']':
+            if s[i] == ']':
                 tmp = ''
+                
                 while stack and stack[-1] != '[':
                     tmp = stack.pop() + tmp
                 
-                stack.pop() # remove '['
-                stack.append(tmp * stack.pop())
+                stack.pop() # remove [
+
+                tmp = tmp * stack.pop() # get number
+                stack.append(tmp)
             else:
-                stack.append(strings[i])
+                stack.append(s[i])
             
-            i += 1
-        
+            i+=1
         return ''.join(stack)
             
+                
 
 
-            
+
