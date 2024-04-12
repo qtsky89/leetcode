@@ -1,40 +1,32 @@
+'''
+    1 => 1                        0
+    2 => 2->1                     1
+    3 => 3->10->5->16->8->4->2->1 7
+'''
+
 class Solution:
     def getKth(self, lo: int, hi: int, k: int) -> int:
-        '''
-        lo=12, hi=15, k=2
+        cache = {1: 0}
 
-        [12, 13, 14, 15]
-
-        12 => 6 => 3 => 10 => 5 => 16 => 8 => 4 => 2 => 1 9 steps
-
-        dp[12] = dp[6] + 1
-        dp[6] = dp[3] + 1
-        dp[3] = dp[10] + 1
-            ...
-
-        '''
-
-        cache = {1: 1}
-
-        def dp(n: int):
-            if n in cache:
-                return cache[n]
+        def dfs(i: int) -> int:
+            if i in cache:
+                return cache[i]
             
-            # even
-            if n % 2 == 0:
-                cache[n] = dp(n/2) + 1
-            else: # odd
-                cache[n] = dp(n*3+1) + 1
-
-            return cache[n]
-
-        ret = [0] * (hi-lo+1)
-
-        for i, n in enumerate(range(lo, hi+1)):
-            ret[i] = [dp(n), n]
+            # even number
+            if i % 2 == 0:
+                cache[i] = dfs(i/2)+1
+            else:
+                cache[i] = dfs(i*3+1)+1
+            
+            return cache[i]
         
-        ret.sort()
-        return ret[k-1][1]
-
+        heap = []
+        for i in range(lo, hi+1):
+            heapq.heappush(heap, [dfs(i) , i])
         
-  
+        ret = 0
+        while k > 0:
+            ret = heapq.heappop(heap)
+            k -= 1
+
+        return ret[1]
