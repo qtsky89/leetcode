@@ -1,31 +1,40 @@
 class RandomizedSet:
     def __init__(self):
-        self._hashmap = dict()
-        self._list = list()
+        # 2, 3, 4
+        self.list: list[int] = [] # [2, 4, 3]
 
+        # {2: 0, 3: 2, 4: 1}
+        self.dic: dict[int, int] = {}
+        
     def insert(self, val: int) -> bool:
-        if val in self._hashmap:
+        if val in self.dic:
             return False
         else:
-            self._list.append(val)
-            self._hashmap[val] = len(self._list)-1
+            self.list.append(val)
+            self.dic[val] = len(self.list)-1
+            return True
+            
+    def remove(self, val: int) -> bool:
+        if val not in self.dic:
+            return False
+        else:
+            a_index = self.dic[val]
+
+            self.dic[self.list[-1]] = a_index
+            self.list[a_index], self.list[-1] = self.list[-1], self.list[a_index]
+
+            del self.dic[val]
+            self.list.pop()
+
             return True
 
-    def remove(self, val: int) -> bool:
-        if val in self._hashmap:
-            index = self._hashmap[val]
-            self._hashmap[self._list[-1]] = index
-            self._list[-1], self._list[index] = self._list[index], self._list[-1]
-            self._list.pop()
-            del self._hashmap[val]
-            return True
-        else:
-            return False
 
     def getRandom(self) -> int:
-        rand_index = random.randint(0, len(self._list)-1)
-        return self._list[rand_index]
+        index = random.randint(0, len(self.list)-1)
 
+        return self.list[index]
+        
+        
 
 
 # Your RandomizedSet object will be instantiated and called as such:
