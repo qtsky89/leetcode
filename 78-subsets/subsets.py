@@ -1,21 +1,22 @@
+from collections import deque
+
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
-        nums.sort()
+        q = deque([[]])
 
-        ret: list[list[int]] = []
-
-        q = deque([set()])
-
+        ret = []
         while q:
-            item = q.popleft()
+            visited = q.popleft()
 
-            ret.append(list(item))
+            ret.append(visited)
 
-            if len(item) == len(nums):
+            if len(visited) == len(nums):
                 break
 
             for n in nums:
-                if not item or max(item) < n:
-                    q.append(item | {n})
-
+                if not visited or max(visited) < n:
+                    q.append([*visited, n])
+        
         return ret
+
+            
