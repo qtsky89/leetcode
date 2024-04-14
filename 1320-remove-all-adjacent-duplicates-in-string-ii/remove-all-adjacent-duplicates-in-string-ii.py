@@ -1,28 +1,23 @@
 class Solution:
     def removeDuplicates(self, strings: str, k: int) -> str:
         '''
-        stack = [d, 1] [d, 2]
+        s = d e e e d b b c c c b d a a 
+                    ^
 
-        d e e e d b b c c c b d a a 
+        k = 3
+        stack = [[d,1], [d, 1], [b, 1], [b, 2] ...]
 
-        d d b b c c c b d a a
         '''
 
-        # stack = [[d, 1] [d, 2]] ...
-        stack: list[list[str, int]] = []
-
+        stack = []
         for s in strings:
-            if not stack:
-                stack.append([s, 1])
-                continue
-            
-            if stack[-1][0] == s:
-                stack.append([s, stack[-1][1] + 1])
+            if stack and stack[-1][0] == s:
+                stack.append([s, stack[-1][1]+1])
             else:
                 stack.append([s, 1])
             
             if stack[-1][1] == k:
-                for i in range(k):
+                for _ in range(k):
                     stack.pop()
 
-        return ''.join([char for char, count in stack])
+        return ''.join([st[0] for st in stack ])
