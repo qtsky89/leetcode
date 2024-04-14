@@ -1,54 +1,40 @@
 class Solution:
     def unhappyFriends(self, n: int, preferences: List[List[int]], pairs: List[List[int]]) -> int:
         '''
-        preferences =[[1, 2, 3], [3, 2, 0], [3, 1, 0], [1, 2, 0]]
-        paris = [[0, 1], [2, 3]]
 
-        friend   preference
-        0         [1, 2, 3]
-        1         [3, 2, 0]
-        2         [3, 1, 0]
-        3         [1, 2, 0]
+        preferences [
+        0   [1 3 2]
+        1   [2 3 0]
+        2   [1 3 0]
+        3   [0 2 1]
+        ]
 
-
-        pairs = [0, 1] [2, 3]
-
-        dic = {
-            0 : ()
-            1 : (3, 2) V
-            2 : ()
-            3 : (1)
-        }
-
-        1 => 3
-        3 => 1
-
-        => unhappy
+        more [
+        0    [1 3]
+        1    [2]
+        2    [1 3]
+        3    [0 2]
+        ]
         '''
 
-        dic = {}
+        more_preferable = [None] * n
 
-        for x, y in pairs:
-            x_index = preferences[x].index(y)
-            dic[x] = set(preferences[x][:x_index])
-
-            y_index = preferences[y].index(x)
-            dic[y] = set(preferences[y][:y_index])
+        # pair1 = 0, pairs2 = 1
+        for pair1, pair2 in pairs:
+            for preference in preferences:
+                index = preferences[pair1].index(pair2)
+                more_preferable[pair1] = set(preferences[pair1][:index])
+                
+                index = preferences[pair2].index(pair1)
+                more_preferable[pair2] = set(preferences[pair2][:index])
         
-        count = 0 
-        for key in dic:
-            for v in dic[key]:
-                if key in dic[v]:
-                  count += 1 # unhappy
-                  break
-        return count  
-
-
-        
-        
-
-        
-    
-        
-
-        return count
+        unhappy_count = 0
+        for i in range(len(more_preferable)):
+            if not more_preferable:
+                continue
+            
+            for j in more_preferable[i]:
+                if i in more_preferable[j]:
+                    unhappy_count += 1
+                    break
+        return unhappy_count
