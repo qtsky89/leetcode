@@ -1,17 +1,17 @@
 class OrderedStream:
     def __init__(self, n: int):
-        self.stream = [''] * n
+        self.array = [''] * n
         self.p = 0
-        
-    def insert(self, idKey: int, value: str) -> List[str]:
-        self.stream[idKey-1] = value
 
+    def insert(self, idKey: int, value: str) -> List[str]:
         start_index = self.p
-        while self.p <= len(self.stream)-1 and self.stream[self.p] != '':
-            self.p += 1
+        self.array[idKey-1] = value
         
-        return self.stream[start_index:self.p]
+        while self.p <= len(self.array)-1 and self.array[self.p] != '':
+            self.p+=1
         
+        return self.array[start_index:self.p]
+            
 
 
 # Your OrderedStream object will be instantiated and called as such:
