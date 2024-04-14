@@ -1,27 +1,19 @@
-from collections import deque
-
 class Solution:
     def allPathsSourceTarget(self, graph: List[List[int]]) -> List[List[int]]:
-        q = deque([[0, [], set()]])
-
         ret = []
-        while q:
-            current, path, visited = q.popleft()
+        def dfs(current_node: int, current_work: list[int], visited: set[int]) -> None:
+            current_work.append(current_node)
+            visited.add(current_node)
 
-            path.append(current)
-            visited.add(current)
+            # it's dead end
+            if current_node == len(graph)-1:
+                ret.append(current_work)
+                return
+            
+            # current_node=0, next_node = 1, 2
+            for next_node in graph[current_node]:
+                dfs(next_node, list(current_work), set(visited))
+            
+        dfs(0, [], set())
 
-            if current == len(graph)-1:
-                ret.append(path)
-                continue
-
-            for next_val in graph[current]:
-                if next_val not in visited:
-                    q.append([next_val, list(path), set(visited)])
         return ret
-
-
-
-        
-
-        
