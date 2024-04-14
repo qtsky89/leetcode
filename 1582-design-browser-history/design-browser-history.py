@@ -1,32 +1,38 @@
+'''
+    leetcode.com -> google.com -> facebook.com -> youtube.com 
+       ^
+'''
+
+class LinkedList:
+    def __init__(self, val: str) -> None:
+        self.val = val
+        self.prev: LinkedList|None = None
+        self.next: LinkedList|None = None
+        
 class BrowserHistory:
-    '''
-    homepage -> google -> naver -> bloomberg
-                           ^      
-    '''
     def __init__(self, homepage: str):
-        # homepage, google
-        self.backward_stack = [homepage]
-
-        # bloomberg, naver
-        self.forward_stack = []
-
+        self.head = LinkedList(homepage)
+        self.p = self.head
+        
     def visit(self, url: str) -> None:
-        self.backward_stack.append(url)
-        self.forward_stack = []
+        tmp = LinkedList(url)
+        
+        self.p.next = tmp
+        tmp.prev = self.p
+
+        self.p = self.p.next
         
     def back(self, steps: int) -> str:
-        while len(self.backward_stack) > 1 and steps > 0:
+        while self.p.prev and steps > 0:
             steps -= 1
-            tmp = self.backward_stack.pop()
-            self.forward_stack.append(tmp)
-        return self.backward_stack[-1]
-    
+            self.p = self.p.prev
+        return self.p.val
+        
     def forward(self, steps: int) -> str:
-        while self.forward_stack and steps > 0:
+        while self.p.next and steps > 0:
             steps -= 1
-            tmp = self.forward_stack.pop()
-            self.backward_stack.append(tmp)
-        return self.backward_stack[-1]
+            self.p = self.p.next
+        return self.p.val
         
 
 
