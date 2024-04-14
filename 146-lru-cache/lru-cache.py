@@ -1,75 +1,43 @@
-
 '''
+    dict =  {
+        2: 'google',
+        3: 'bloomberg'
+    }
 
-    priority [1 2]
-
-'''
-
-class Node:
-    def __init__(self, key: int | None, val: int | None):
-        self.key = key
-        self.val = val
-        self.next = None
-        self.prev = None
-
-'''
-    LeastRecentlyUsed <-> Recently Used
-      head                    tail
+    list = [3, 2]
+               ^
 '''
 
 class LRUCache:
     def __init__(self, capacity: int):
-        # key: int, value: Node
-        self.hash_map = {}
+        self.dict: dict[int, int] = {}
+        self.deque: deque[int] = deque()
         self.capacity = capacity
-        self.head = Node(None, None)
-        self.tail = Node(None, None)
-
-        self.head.next, self.tail.prev = self.tail, self.head
-    
-    def remove(self, node: Node) -> None:
-        node.prev.next, node.next.prev = node.next, node.prev
 
     def get(self, key: int) -> int:
-        if key not in self.hash_map:
+        if key not in self.dict:
             return -1
         
-        node = self.hash_map[key]
+        value = self.dict[key]
+        
+        self.deque.remove(key)
+        self.deque.append(key)
 
-        # remove
-        self.remove(node)
-
-        # drag to the tail
-        self.insert(node)
-
-        return node.val
-    
-    def insert(self, node: Node) -> None:
-        prev = self.tail.prev
-
-        prev.next, node.prev = node, prev
-        node.next, self.tail.prev = self.tail, node
+        return value
 
     def put(self, key: int, value: int) -> None:
-        if key in self.hash_map:
-            node = self.hash_map[key]
-            self.remove(node)
-
-            node = Node(key, value)
-            self.insert(node)
-            self.hash_map[key] = node
+        # update
+        if key in self.dict:
+            self.dict[key] = value
+            self.deque.remove(key)
+            self.deque.append(key)
         else:
-            node = Node(key, value)
-
-            self.insert(node)
-            self.hash_map[key] = node
-
-            if len(self.hash_map) > self.capacity:
-                del self.hash_map[self.head.next.key]
-                self.remove(self.head.next)
-                
-    
-
+            # create
+            self.dict[key] = value
+            self.deque.append(key)
+            if len(self.deque) > self.capacity:
+                k = self.deque.popleft()
+                del self.dict[k]
 
 # Your LRUCache object will be instantiated and called as such:
 # obj = LRUCache(capacity)
