@@ -5,59 +5,78 @@
 #         self.next = next
 class Solution:
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
-        l1_stack, l2_stack = [], []
+        '''
+        7 -> 2 -> 4 -> 3
+             5 -> 6 -> 4
 
-        p = l1
-        while p:
-            l1_stack.append(p.val)
-            p = p.next
-        
-        p = l2
-        while p:
-            l2_stack.append(p.val)
-            p = p.next
-        
-        ret = None
+        3 -> 4 -> 2 -> 7
+        4 -> 6 -> 5
+
+        7 -> 0 -> 8 -> 7 reverse again!
+        '''
+    
+        l1_reversed = self.reverse(l1)
+        l2_reversed = self.reverse(l2)
+
+        ret = ListNode(None)
+        p = ret
+
+        p1, p2 = l1_reversed, l2_reversed
 
         carry = 0
-        while l1_stack and l2_stack:
-            op1, op2 = l1_stack.pop(), l2_stack.pop()
+        while p1 and p2:
+            tmp = p1.val + p2.val + carry
 
-            tmp = op1 + op2 + carry
-            carry = 0
             if tmp >= 10:
-                tmp -= 10
                 carry = 1
-            
-            new_node = ListNode(tmp)
-            new_node.next = ret
-            ret = new_node
+                tmp -= 10
+            else:
+                carry = 0
+
+            p.next = ListNode(tmp)
+            p = p.next
+            p1 = p1.next
+            p2 = p2.next
         
-        while l1_stack:
-            tmp = l1_stack.pop() + carry
-            carry = 0
+        while p1:
+            tmp = p1.val + carry
             if tmp >= 10:
-                tmp -= 10
                 carry = 1
+                tmp -= 10
+            else:
+                carry = 0
             
-            new_node = ListNode(tmp)
-            new_node.next = ret
-            ret = new_node
+            p.next = ListNode(tmp)
+            p = p.next
+            p1 = p1.next
 
-        while l2_stack:
-            tmp = l2_stack.pop() + carry
-            carry = 0
+        while p2:
+            tmp = p2.val + carry
             if tmp >= 10:
-                tmp -= 10
                 carry = 1
+                tmp -= 10
+            else:
+                carry = 0
             
-            new_node = ListNode(tmp)
-            new_node.next = ret
-            ret = new_node
+            p.next = ListNode(tmp)
+            p = p.next
+            p2 = p2.next
         
         if carry == 1:
-            new_node = ListNode(1)
-            new_node.next = ret
-            ret = new_node
+            p.next = ListNode(1)
+            carry = 0
+        
+        return self.reverse(ret.next)
 
-        return ret
+    def reverse(self, head: ListNode) -> ListNode:
+        prev, p = None, head
+
+        while p:
+            tmp = p.next
+            p.next = prev
+            prev, p = p, tmp
+        
+        return prev
+        
+
+
