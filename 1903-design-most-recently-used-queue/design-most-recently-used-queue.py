@@ -1,13 +1,15 @@
 class MRUQueue:
     def __init__(self, n: int):
-        self.queue = [i for i in range(1, n+1)]
+        self.list = [i for i in range(1, n+1)]
+        
 
     def fetch(self, k: int) -> int:
-        tmp = self.queue.pop(k-1)
-
-        self.queue.append(tmp)
+        tmp = self.list.pop(k-1)
+        self.list.append(tmp)
 
         return tmp
+
+        
         
 
 
