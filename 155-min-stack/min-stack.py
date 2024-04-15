@@ -1,23 +1,16 @@
-'''
-    stack = [2, 2] [3, 2] [1, 1] 
-
-'''
-
-
 class MinStack:
     def __init__(self):
-        self.stack: tuple[int, int] = []
+        self.stack: list[int, int] = []
 
     def push(self, val: int) -> None:
-        if self.stack:
-            self.stack.append((val, min(self.stack[-1][1], val)))
+        if not self.stack:
+            self.stack.append([val, val])
         else:
-            self.stack.append((val, val))
+            self.stack.append([val, min(self.stack[-1][1], val)])
 
     def pop(self) -> None:
         self.stack.pop()
-
-
+        
     def top(self) -> int:
         return self.stack[-1][0]
         
