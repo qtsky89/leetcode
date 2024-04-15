@@ -39,11 +39,5 @@ class Solution:
                 for new_item in hash_map[item]:
                     q.append(new_item)
         return ret
-        
-        
-
-
-        
-        return ret
 
         
