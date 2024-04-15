@@ -1,13 +1,20 @@
 class Solution:
     def minSteps(self, s: str, t: str) -> int:
-        counter_t = Counter(t)
-        counter_s = Counter(s)
+        '''
+        s = b a b
+       
+        t = a b a
+            ^
+        '''
+
+        s_counter = Counter(s)
+        t_counter = Counter(t)
 
         ret = 0
-        for key in counter_t:
-            tmp = (counter_t[key] - counter_s[key] if key in counter_s else counter_t[key])
+        for key in t_counter:
+            if key in s_counter and t_counter[key] > s_counter[key]:
+                ret += t_counter[key] - s_counter[key]
+            elif key not in s_counter:
+                ret += t_counter[key]
 
-            if tmp > 0:
-                ret += tmp
-        
         return ret
