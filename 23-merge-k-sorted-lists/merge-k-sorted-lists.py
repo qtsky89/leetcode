@@ -6,33 +6,29 @@
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
         '''
-        4 -> 5
-        3 -> 4
-        6
-
-        1 -> 1 -> 2 -> 
+        [
+        1->4->5,
+        1->3->4,
+        2->6
+        ]
         '''
 
-        # make dummy node
         ret = ListNode(None)
         p = ret
 
+        # 1, 1, 2
         heap = []
-        for i in range(len(lists)):
-            if lists[i]:
-                heapq.heappush(heap, [lists[i].val, i])
-
+        for index, l in enumerate(lists):
+            if l:
+                heapq.heappush(heap, [l.val, index])
+        
         while heap:
-            _, i = heapq.heappop(heap)
+            small_val, index = heapq.heappop(heap)
+            lists[index] = lists[index].next
+            if lists[index]:
+                heapq.heappush(heap, [lists[index].val, index])
 
-            p.next = lists[i]
-            lists[i] = lists[i].next
-
-            if lists[i]:
-                heapq.heappush(heap, [lists[i].val, i])
-
+            p.next = ListNode(small_val)
             p = p.next
 
         return ret.next
-
-        
