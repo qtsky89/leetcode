@@ -1,19 +1,27 @@
 class Solution:
     def maxDepth(self, strings: str) -> int:
         '''
-        s = 1+(2*3)+((8)/4) + 1
-                1 + max(1, 2) 0 
+        '(' => counter += 1
+        ')' => counter -= 1
+
+        keep the max counter value
+
+        example.1
+            s = ( 1 + ( 2 * 3 ) + ( ( 8 ) / 4 ) ) + 1
+                                                    ^
+            counter = 0
         '''
-        
-        depth = 0
-        open_count = 0
+
+        count = 0
+
+        max_count = 0
         for s in strings:
-            match s:
-                case '(':
-                    open_count += 1
-                case ')':
-                    open_count -= 1
+            if s == '(':
+                count += 1
+            elif s == ')':
+                count -= 1
             
-            depth = max(depth, open_count)
-        return depth
+            max_count = max(max_count, count)
+        return max_count
+
         
