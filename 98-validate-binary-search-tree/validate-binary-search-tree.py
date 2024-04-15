@@ -6,20 +6,20 @@
 #         self.right = right
 class Solution:
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
+
         ret = True
-        def dfs(node: TreeNode, min_val: int, max_val: int):
-            nonlocal ret
-            if not node or not ret:
+        def isValid(node: TreeNode, min_value: int, max_value: int) -> None:
+            if not node:
                 return
             
-            if not(min_val < node.val < max_val):
+            if not (min_value < node.val < max_value):
+                nonlocal ret
                 ret = False
             
-            dfs(node.left, min_val, node.val)
-            dfs(node.right, node.val, max_val)
-
-        dfs(root, -float('inf'), float('inf'))
+            isValid(node.left, min_value, node.val)
+            isValid(node.right, node.val, max_value)
+            
+        isValid(root, -float('inf'), float('inf'))
 
         return ret
-
         
