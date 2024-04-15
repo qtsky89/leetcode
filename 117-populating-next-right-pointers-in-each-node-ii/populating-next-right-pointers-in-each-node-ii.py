@@ -8,16 +8,21 @@ class Node:
         self.next = next
 """
 
-from collections import deque
-
 class Solution:
-    def connect(self, root: 'Node') -> 'Node':
+    def connect(self, root: 'Optional[Node]') -> 'Optional[Node]':
+        '''
+        step1. ret =  [[1], [2, 3], [4, 5, 6 7]]
+        
+        step2. connect!
+        '''
+
         if not root:
-            return
+            return None
 
+        # step1. ret =  [[1], [2, 3], [4, 5, 6 7]]
         ret = []
-
         q = deque([[root, 0]])
+
         while q:
             item, index = q.popleft()
 
@@ -28,13 +33,22 @@ class Solution:
             
             if item.left:
                 q.append([item.left, index+1])
+            
             if item.right:
                 q.append([item.right, index+1])
-
-        for i in range(len(ret)):
-            for j in range(len(ret[i])-1):
-                ret[i][j].next = ret[i][j+1]
         
+            # step2. connect!
+
+            for i in range(len(ret)):
+                li = ret[i]
+
+                for j in range(len(li)-1):
+                    li[j].next = li[j+1]
+            
         return root
+
+
+
+
 
         
