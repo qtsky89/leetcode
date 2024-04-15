@@ -9,26 +9,24 @@
 #        :rtype List[str]
 #        """
 
-from collections import deque
 class Solution:
     def crawl(self, startUrl: str, htmlParser: 'HtmlParser') -> List[str]:
-        host = startUrl.split('/')[2]
+        host_name = startUrl[7:].split('/')[0]
 
         q = deque([startUrl])
+
         visited = set()
-        ret = []
-
         while q:
-            url = q.popleft()
+            item = q.popleft()
+            if host_name == item[7:].split('/')[0]:
+                visited.add(item)
+            else:
+                continue
 
-            if url not in visited:
-                visited.add(url)
-                ret.append(url)
+            next_items = htmlParser.getUrls(item)
 
-            # check next url
-            for u in htmlParser.getUrls(url):
-                if u.split('/')[2] == host and u not in visited:
-                    q.append(u)
-        
-        return ret
-
+            for next_item in next_items:
+                if next_item not in visited:
+                    q.append(next_item)
+        return visited
+            
