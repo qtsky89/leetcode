@@ -3,11 +3,10 @@ class Solution:
         nums.sort()
 
         '''
-
-        -4 -1 -1 0 1 2
-         ^  
+        nums[i] + nums[j] + nums[k] => 
         
-
+        -4 -1 -1 0 1 2
+        ^   ^        ^
         '''
 
         ret = []
@@ -16,21 +15,18 @@ class Solution:
             j = i + 1
             k = len(nums)-1
 
-            while j < k:
-                tmp = nums[j] + nums[k]
+            while j < k :
+                if nums[i] + nums[j] + nums[k] == 0:
+                    key  = (nums[i], nums[j], nums[k])
 
-                # bingo
-                if tmp == -nums[i]:
-                    key = (nums[i], nums[j], nums[k])
-                    if  key not in visited:
+                    if key not in visited:
                         ret.append([nums[i], nums[j], nums[k]])
-                        visited.add(key)
+                    visited.add(key)
+                    
                     j += 1
                     k -= 1
-                elif tmp > -nums[i]:
+                elif nums[i] + nums[j] + nums[k] > 0:
                     k -= 1
                 else:
                     j += 1
         return ret
-
-                
