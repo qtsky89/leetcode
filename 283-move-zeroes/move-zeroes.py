@@ -4,15 +4,23 @@ class Solution:
         Do not return anything, modify nums in-place instead.
         """
         '''
-        nums = 1   3   0   0   12
-                       ^        ^
+        nums = 0 1 0 3 12
+                 ^
+               1 0 0 3 12
+                     ^
+               1 3 0 0 12
+                   ^    ^
+                1 3 12 0 0 
+        ''' 
 
-        '''
+        i, j = 0, 0
 
-        l, r = 0, 0
-        while r <= len(nums)-1:
-            if nums[r] != 0:
-                nums[l], nums[r] = nums[r], nums[l]
-                l += 1
+        while i <= j <= len(nums)-1:
+            if nums[j] != 0:
+                nums[i], nums[j] = nums[j], nums[i]
 
-            r += 1
+                i += 1
+                j += 1
+            else:
+                j += 1
+        
