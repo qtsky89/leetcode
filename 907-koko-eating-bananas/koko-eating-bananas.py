@@ -2,33 +2,31 @@ class Solution:
     def minEatingSpeed(self, piles: List[int], h: int) -> int:
         '''
         piles = [3, 6, 7, 11] h = 8
-                 
-        k = 1   3 + 6 + 7 + 11 = 27 hours, koko will be arrested
-        k = 2   2 + 3 + 4 + 6  = 15 hours,  koko will be arrested
-        k = 3   1 + 2 + 3 + 4 = 12 hours, koko will be arrested
-        k = 4   1 + 2 + 2 + 3 = 8 hours, koko will not be arrested ! yey!
-        k = larget piles   1 + 1 + 1 + 1 = 4 hours
-
-        
-        1. every interation we cacluate the hours
-        2. hours == h return k // TODO. add some edge case
-        3. hours > h k = l + 1
-        4. hours < h k = r-1
+                 3  6  7  11  k = 1, fail, 27 hours             
+                 2  3  4   6  k = 2, fail, 15 hours
+                 1  2   3  4  k = 3, fail, 10 hours
+                 1, 2, 2, 3   k = 4  success, 8 hours
         '''
 
         l, r = 1, max(piles)
+        # 1 ... 11 find min k
 
-        k = 1
+        min_k = float('inf')
         while l <= r:
-            m = (l + r) // 2
+            mid = (l + r) // 2
 
-            hours = 0
+            total = 0
             for pile in piles:
-                hours += math.ceil(pile / m)
-            
-            if hours <= h:
-                k = m
-                r = m - 1
+                total += (pile // mid) + (1 if pile % mid != 0 else 0)
+
+            # one of right answer
+            if total <= h:
+                r = mid - 1
+                min_k = min(min_k, mid)
             else:
-                l = m + 1
-        return k
+                l = mid + 1
+
+        return min_k
+        
+
+            
