@@ -17,7 +17,7 @@ class Solution:
 
             total = 0
             for pile in piles:
-                total += (pile // mid) + (1 if pile % mid != 0 else 0)
+                total += math.ceil(pile / mid)
 
             # one of right answer
             if total <= h:
