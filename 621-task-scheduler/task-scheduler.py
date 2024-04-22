@@ -22,7 +22,7 @@ class Solution:
         while heap or q:
             time += 1
 
-            if q and q[0][0] <= time:
+            if q and q[0][0] == time:
                 heapq.heappush(heap, q.popleft()[1])
             
             if not heap:
