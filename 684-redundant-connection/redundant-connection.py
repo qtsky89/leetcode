@@ -1,32 +1,50 @@
 class Solution:
     def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
-        # parent = [0, 1, 2, 3, 4, 5]
-        parent = [i for i in range(len(edges)+1)]
-        rank = [1] * (len(edges)+1)
+        '''
+        # initial state
+        parent = [0, 1, 2, 3]
+        rank =   [0, 1, 1, 1]
 
-        def find(n: int):
-            if parent[n] != n:
-                parent[n] = find(parent[n])
-            return parent[n]
-            
+        # [1, 2]
+        parent = [0, 1, 1, 3]
+        rank =   [0, 2, 1, 1]
+
+        # [1, 3]
+        parent = [0, 1, 1, 1]
+        rank =   [0, 3, 1, 1]
+
+        # [2, 3]
+        parent = [0, 1, 1, 1]
+        rank =   [0, 3, 1, 1]
+        '''
+        '''
+        # initial state
+        parent = [0, 1, 2, 3]
+        rank =   [0, 1, 1, 1]
+        '''
+        parent = [i for i in range(len(edges)+1)]
+        rank = [1 for i in range(len(edges)+1)]
+
+        def find(current: int) -> int:
+            while current != parent[current]:
+                current = parent[current]
+            return current
+
         def union(x: int, y: int) -> bool:
             p1, p2 = find(x), find(y)
 
-            # already in the connection
+            # it'a already connected
             if p1 == p2:
                 return False
-          
-            if rank[p1] > rank[p2]:
-                parent[p2] = p1
-                rank[p1] += rank[p2]
-            else:
-                parent[p1] = p2
-                rank[p2] += rank[p1]
             
+            if rank[p1] > rank[p2]:
+                rank[p1] += rank[p2]
+                parent[p2] = p1
+            else:
+                rank[p2] += rank[p1]
+                parent[p1] = p2
             return True
         
         for x, y in edges:
             if not union(x, y):
                 return [x, y]
-
-        
