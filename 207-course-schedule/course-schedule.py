@@ -1,53 +1,57 @@
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
         '''
-        1. make hash_map
-        hash_map = {
-            start: [end]
+        {
+            0 : [1, 3]
+            1 : [2]
+            3 : [1]
         }
 
-        2. can travel only no prerequisite 
-
-        3. remove line when travel
-
-        4. return true if hash_map is empty else return false
+        count = [0, 0, 0, 0]
+                 0  2  1  1
         '''
-        hash_map = {}
-        indirect_count = {i: 0 for i in range(numCourses)}
-
-        # 1. make hash_map, indirect count
-        for prerequisite in prerequisites:
-            end, start = prerequisite
-
-            if start in hash_map:
-                hash_map[start].append(end)
-            else:
-                hash_map[start] = [end]
-            
-            indirect_count[end] += 1
-            
         
-        # 2. can travel only no prerequisite 
+        count = [0] * numCourses
+        # make adjacent_map
+        adjacent_map = {}
+        for end, start in prerequisites:
+            if start in adjacent_map:
+                adjacent_map[start].append(end)
+            else:
+                adjacent_map[start] = [end]
+            
+            count[end] += 1
+
         q = deque()
-        for i in range(numCourses):
-            if indirect_count[i] == 0:
+        visited = set()
+
+        for i in range(len(count)):
+            if count[i] == 0:
                 q.append(i)
         
         while q:
             item = q.popleft()
 
-            if item in hash_map:
-                for new_item in hash_map[item]:
-                    indirect_count[new_item] -= 1
+            visited.add(item)
 
-                    if indirect_count[new_item] == 0:
-                        q.append(new_item)
-                del hash_map[item]
+            if item in adjacent_map:
+                for new_item in adjacent_map[item]:
+                    if new_item not in visited:
+                        count[new_item] -= 1
+                        if count[new_item] == 0:
+                            q.append(new_item)
         
-        return len(hash_map) == 0
-        
+        return len(visited) == numCourses
                 
-
+        
+        
+        
             
+        
 
-            
+
+        
+        
+
+
+
