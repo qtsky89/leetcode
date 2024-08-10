@@ -6,10 +6,7 @@ class Solution:
         while r <= len(nums)-1:
             if count[nums[r]] <= 1:
                 nums[w] = nums[r]
-                count[nums[r]] += 1
-                r += 1
                 w += 1
-            else:
-                count[nums[r]] += 1
-                r += 1
+            count[nums[r]] += 1
+            r += 1
         return w
