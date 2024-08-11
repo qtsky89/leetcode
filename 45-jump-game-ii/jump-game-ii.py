@@ -1,21 +1,21 @@
 class Solution:
     def jump(self, nums: List[int]) -> int:
         '''
-        nums = 2  3  1  1  4
-                  ^        ^
-               0  1  2  3  4   
-                               
+        nums = [3,2,1,0,4]
+                       
         '''
+        p1 = len(nums)-1
 
         count = 0
-        # i = 4
-        i = len(nums)-1
-        while i > 0:
-            count += 1
-            # j 0 ~ 3
-            for j in range(i):
-                if nums[j] >= (i-j):
-                    i = j
-                    break
-        return count
+        while p1 > 0:
+            is_moved = False
+            for p2 in range(0, p1):
+                length = p1 - p2
                 
+                if nums[p2] >= length:
+                    p1 = p2
+                    count += 1
+                    is_moved = True
+                    break
+                
+        return count
