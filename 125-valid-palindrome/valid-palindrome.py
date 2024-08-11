@@ -1,4 +1,5 @@
 class Solution:
+    ''' easy solution
     def isPalindrome(self, s: str) -> bool:
         ret = []
         for i in range(len(s)):
@@ -15,4 +16,26 @@ class Solution:
                 p1 += 1
                 p2 -= 1
         
+        return True'''
+
+    def isPalindrome(self, s: str) -> bool:
+        p1, p2 = 0, len(s)-1
+
+        while p1 < p2:
+            a = s[p1].lower()
+            b = s[p2].lower()
+
+            if not a.isalnum():
+                p1 += 1
+                continue
+            elif not b.isalnum():
+                p2 -= 1
+                continue
+            elif a != b:
+                return False
+            
+            p1 += 1
+            p2 -= 1
         return True
+                
+                
