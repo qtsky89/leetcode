@@ -1,23 +1,30 @@
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
         '''
-        s =  p w w k e w 
-                 ^^                     p w
-
+        s =   p  w  w  k  e  w
+                    ^^
+        
+        visited = {}
         '''
 
-        p1, p2 = 0, 0
-        visited = set()
+        if len(s) == 0:
+            return 0
 
+        p1, p2 = 0, 0
+        visited = set(s[p2])
         longest_length = 0
-        while p2 <= len(s)-1:
-            if s[p2] not in visited:
-                longest_length = max(longest_length, p2-p1+1)
-            else:
-                while p1 <= p2 and (s[p2] in visited):
-                    visited.remove(s[p1])
-                    p1 += 1
-            visited.add(s[p2])
+
+        while p1 <= p2 and p2 <= len(s)-1:
+            longest_length = max(longest_length, p2-p1+1)
+
             p2 += 1
-        
+            if p2 <= len(s)-1:
+                if s[p2] not in visited:
+                    visited.add(s[p2])
+                else:
+                    while s[p1] != s[p2]:
+                        visited.remove(s[p1])
+                        p1+=1
+                    p1+=1
         return longest_length
+
