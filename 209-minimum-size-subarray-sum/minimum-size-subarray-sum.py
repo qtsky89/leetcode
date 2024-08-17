@@ -15,7 +15,7 @@ class Solution:
         tmp = nums[0]
 
         while p1 <= p2 and p2 <= len(nums)-1:
-            if tmp >= target and p1 <= p2:
+            if tmp >= target:
                 minimum_length = min(minimum_length, p2-p1+1)
                 tmp -= nums[p1]
                 p1 += 1
