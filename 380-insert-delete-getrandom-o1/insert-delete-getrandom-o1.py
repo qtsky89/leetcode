@@ -18,11 +18,9 @@ class RandomizedSet:
             return False
 
         index = self._dic[val]
-        last_index = len(self._list)-1
-        last_val = self._list[-1]
-        self._dic[last_val] = index
+        self._dic[self._list[-1]] = index
 
-        self._list[index], self._list[last_index] = self._list[last_index], self._list[index]
+        self._list[index], self._list[-1] = self._list[-1], self._list[index]
         self._list.pop()
 
         del self._dic[val]
