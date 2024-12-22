@@ -6,18 +6,25 @@ class Solution:
         '''
         colors = [0] * len(graph)
 
-        def dfs(i: int, color: int) -> bool:
+        ret = True
+
+        def dfs(i: int, color: int) -> None:
+            nonlocal ret
             colors[i] = color
+
+            if not ret:
+                return
 
             for neighbor in graph[i]:
                 if colors[neighbor] == colors[i]:
-                    return False
-                if colors[neighbor] == 0 and not dfs(neighbor, -1*colors[i]):
-                    return False
-            return True
+                    ret = False
+                    return
+
+                if colors[neighbor] == 0:
+                    dfs(neighbor, -1*colors[i])
 
         for i in range(len(graph)):
-            if not colors[i] and not dfs(i, 1):
-                return False
+            if not colors[i]:
+                dfs(i, 1)
         
-        return True
+        return ret
