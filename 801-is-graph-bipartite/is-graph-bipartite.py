@@ -12,10 +12,8 @@ class Solution:
             for neighbor in graph[i]:
                 if colors[neighbor] == colors[i]:
                     return False
-
-                if not colors[neighbor]:
-                    if not dfs(neighbor, -1*colors[i]):
-                        return False
+                if colors[neighbor] == 0 and not dfs(neighbor, -1*colors[i]):
+                    return False
             return True
 
         for i in range(len(graph)):
