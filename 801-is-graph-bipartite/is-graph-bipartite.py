@@ -7,13 +7,11 @@ class Solution:
         colors = [0] * len(graph)
 
         ret = True
-
         def dfs(i: int, color: int) -> None:
             nonlocal ret
-            colors[i] = color
-
             if not ret:
                 return
+            colors[i] = color
 
             for neighbor in graph[i]:
                 if colors[neighbor] == colors[i]:
