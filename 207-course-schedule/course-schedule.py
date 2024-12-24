@@ -28,6 +28,7 @@ class Solution:
         adjacent_map: dict[int, list[int]] = {}
         count_map: dict[int, int] = {i: 0 for i in range(numCourses)}
 
+        # time complexity: O(M) M => number of prerequisites
         for end, start in prerequisites:
             if start in adjacent_map:
                 adjacent_map[start].append(end)
@@ -39,11 +40,13 @@ class Solution:
         visited = set()
 
         q = deque()
+        # time complexity: O(N)
         for key, count in count_map.items():
             if count == 0:
                 q.append(key)
 
         # 0, 2
+        # O(N+M)
         while q:
             # 0
             current_course = q.popleft()
@@ -57,3 +60,8 @@ class Solution:
                             q.append(next_course)
 
         return len(visited) == numCourses
+
+        '''
+        time complexity: O(N+M) N=> numrCourses, M => prerequisites length
+        space complecity: O(N+M) N=> numrCourses, M => prerequisites length
+        '''
