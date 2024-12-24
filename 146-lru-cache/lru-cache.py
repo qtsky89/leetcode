@@ -1,43 +1,65 @@
-'''
-    dict =  {
-        2: 'google',
-        3: 'bloomberg'
-    }
+class DoubleLinkedListNode:
+    def __init__(self, key: int = None, val: int = None, prev: 'DoubleLinkedListNode' = None, next: 'DoubleLinkedListNode' = None) -> None:
+        self.key = key
+        self.val = val
+        self.prev = prev
+        self.next = next
 
-    list = [3, 2]
-               ^
-'''
+class DoubleLinkedList:
+    def __init__(self) -> None:
+        self.front = DoubleLinkedListNode()
+        self.back = DoubleLinkedListNode()
+
+        self.front.next = self.back
+        self.back.prev = self.front
+    
+    def add_back(self, target: DoubleLinkedListNode) -> None:
+        self.back.prev.next, target.prev, target.next, self.back.prev  = target, self.back.prev, self.back, target
+    
+    def delete_target(self, target: DoubleLinkedListNode) -> None:
+        target.prev.next, target.next.prev = target.next, target.prev
 
 class LRUCache:
     def __init__(self, capacity: int):
-        self.dict: dict[int, int] = {}
-        self.deque: deque[int] = deque()
-        self.capacity = capacity
+        self._cache_map: dict[int, DoubleLinkedListNode] = {}
+        self._priotize_list: DoubleLinkedList = DoubleLinkedList()
+        self._capacity = capacity
 
     def get(self, key: int) -> int:
-        if key not in self.dict:
+        if key not in self._cache_map:
             return -1
         
-        value = self.dict[key]
+        target = self._cache_map[key]
         
-        self.deque.remove(key)
-        self.deque.append(key)
+        # remove
+        self._priotize_list.delete_target(target)
+        self._priotize_list.add_back(target)
 
-        return value
+        return target.val
 
     def put(self, key: int, value: int) -> None:
         # update
-        if key in self.dict:
-            self.dict[key] = value
-            self.deque.remove(key)
-            self.deque.append(key)
-        else:
-            # create
-            self.dict[key] = value
-            self.deque.append(key)
-            if len(self.deque) > self.capacity:
-                k = self.deque.popleft()
-                del self.dict[k]
+        if key in self._cache_map:
+            target = self._cache_map[key]
+            target.val = value
+            target.prev.next, target.next.prev = target.next, target.prev
+            self._priotize_list.add_back(target)
+        else: # create
+            target = DoubleLinkedListNode(key, value)
+            self._priotize_list.add_back(target)
+            self._cache_map[key] = target
+
+            if len(self._cache_map) > self._capacity:
+                # remove least recently used node
+                target = self._priotize_list.front.next
+                self._priotize_list.delete_target(target)
+
+                del self._cache_map[target.key]
+                
+            
+            
+
+        
 
 # Your LRUCache object will be instantiated and called as such:
 # obj = LRUCache(capacity)
