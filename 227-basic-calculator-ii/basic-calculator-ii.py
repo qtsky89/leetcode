@@ -25,6 +25,8 @@ class Solution:
 
         i = 0
         stack = []
+
+        # time: O(N), space: O(N)
         while i <= len(s)-1:
             if s[i] == ' ' or s[i] == '+':
                 i += 1
