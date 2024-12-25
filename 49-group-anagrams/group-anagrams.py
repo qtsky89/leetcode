@@ -1,25 +1,29 @@
+from collections import Counter
+
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
         '''
-        step1.
-
-        hash_map = {
-            'aet' : ['eat', 'tea' ...],
-            'abt' : ['bat']
-            ..
+        str = "eat"
+        {
+            'e' : 1
+            'a' : 1
+            't' : 1
         }
 
-        step2. return list(hash_map.values())
+        ret = {
+            counter : ["ate", "eat", "tea"]
+        }
         '''
 
-        hash_map = {}
+        ret_map: dict[str, list[str]] = {}
 
-        for s in strs:
-            k = ''.join(sorted(s))
-
-            if k in hash_map:
-                hash_map[k].append(s)
+        for string in strs:
+            c_str = ''.join(sorted(string))
+            if c_str in ret_map:
+                ret_map[c_str].append(string)
             else:
-                hash_map[k] = [s]
-        return list(hash_map.values())
+                ret_map[c_str] = [string]
+
+        ret = [v for v in ret_map.values()]
+        return ret
         
