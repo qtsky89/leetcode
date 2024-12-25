@@ -1,47 +1,49 @@
+from collections import defaultdict, deque
+
 class Solution:
     def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
-
         '''
-        there are n cities
-
-        example1.
-        n=4 0, 1, 2, 3
-
-        src = 0, dist = 3 k=1
-
-        # step1. let make this hash_map
-        {
-            2 : [ [0, 100], [3, 200]  ]
+        adjacent_map = {
+            0 : [(1, 100)]
+            1 : [(2, 100), (3, 600)]
+            2 : [(0, 100), (3, 100)]
+            3 : [()]
         }
+
+        min_prices = {
+            0 : inf
+            1 : inf
+            2 : inf
+            3 : inf
+        }
+
+        0 -> 3
         '''
-        # step1. let make this hash_map
-        hash_map = {}
-        for i in range(len(flights)):
-            from_i, to_i, price_i = flights[i]
 
-            if from_i in hash_map:
-                hash_map[from_i].append([to_i, price_i])
-            else:
-                hash_map[from_i] = [[to_i, price_i]]
-            
+        adjacent_map: defaultdict[int, list[tuple[int, int]]] = defaultdict(list)
 
-        prices = [float('inf')] * n
-        q = deque([[src, 0, 0]])
-
+        for start, end, cost in flights:
+            adjacent_map[start].append((end, cost))
+        
+        min_prices = {i: float('inf') for i in range(n)}
+        
+        q = deque([(src, 0, 0)])
         while q:
-            current_city, current_cost, current_stop = q.popleft()
+            # current_city = 0, current_cost = 0, current_stop_count = 0
+            current_city, current_cost, current_stop_count = q.popleft()
 
-            prices[current_city] = min(prices[current_city], current_cost)
-
+            if current_stop_count > k+1:
+                continue
+            
+            min_prices[current_city] = min(min_prices[current_city], current_cost)
             if current_city == dst:
                 continue
 
-            if current_stop > k:
-                continue
-            
-            if current_city in hash_map:
-                for next_city, cost in hash_map[current_city]:
-                    if current_cost + cost < prices[next_city]:
-                        q.append([next_city, current_cost + cost, current_stop+1])
-        return prices[dst] if prices[dst] != float('inf') else -1
-            
+            for next_city, cost in adjacent_map[current_city]:
+                if current_cost+cost < min_prices[next_city]:
+                    q.append((next_city, current_cost+cost, current_stop_count+1))
+
+        return min_prices[dst] if min_prices[dst] != float('inf') else -1
+        
+        
+        
