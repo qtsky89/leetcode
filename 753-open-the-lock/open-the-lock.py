@@ -2,32 +2,52 @@ from collections import deque
 
 class Solution:
     def openLock(self, deadends: List[str], target: str) -> int:
-        visited = set(deadends)
+        '''
+        0000
+        '''
 
-        q = deque([["0000", 0]])
+        # visited = {"0201", "0101", "0102", "1212", "2002"}
+        visited = set(deadends)
+        q = deque([('0000', 0)])
+
         while q:
-            current_lock, count = q.popleft()
-            if current_lock in visited:
+            # item = '0000'
+            item, count = q.popleft()
+
+            if item in visited:
                 continue
 
-            if current_lock == target:
+            visited.add(item)
+
+            if item == target:
                 return count
-            
-            visited.add(current_lock)
-            
-            # first one 0
-            for i in range(4):
-                new_up = (int(current_lock[i]) + 1) % 10
-                new_up_digits = current_lock[:i] + str(new_up) + current_lock[i+1:]
-                if new_up_digits not in visited:
-                    q.append([new_up_digits, count+1])
 
-                new_down = int(current_lock[i]) - 1
-                if new_down < 0:
-                    new_down += 10
-                new_down_ditigts = current_lock[:i] + str(new_down) + current_lock[i+1:]
+            # item[i] =>9 => 0
+            # i = 0
+            for i in range(len(item)):
+                # t = 1
+                t = str((int(item[i]) + 1) % 10)
 
-                if new_down_ditigts not in visited:
-                    q.append([new_down_ditigts, count+1])
+                # tmp = 1000
+                tmp = item[:i] + t +item[i+1:]
 
+                if tmp not in visited:
+                    q.append((tmp, count+1))
+
+                # t = 1
+                t = int(item[i])-1
+                if t < 0:
+                    t += 10
+
+                # tmp = 1000
+                tmp = item[:i] + str(t) +item[i+1:]
+
+                if tmp not in visited:
+                    q.append((tmp, count+1))
         return -1
+            
+
+
+            
+
+            
