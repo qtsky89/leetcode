@@ -10,7 +10,7 @@ class Solution:
             else:
                 b = mid -1
             
-        row = (t+b) // 2
+        row = b
         
         l, r = 0, len(matrix[0])-1
 
