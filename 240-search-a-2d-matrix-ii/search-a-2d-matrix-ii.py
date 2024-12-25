@@ -4,6 +4,7 @@ class Solution:
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
         q = deque([(0, len(matrix[0])-1)])
 
+        # time: O(M+N) space: O(M+N)
         while q:
             i, j = q.popleft()
 
