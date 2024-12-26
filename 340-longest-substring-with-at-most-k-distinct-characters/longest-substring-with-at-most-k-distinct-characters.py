@@ -55,7 +55,7 @@ class Solution:
             e : 1
         }
         '''
-        while i <= j <= len(s)-1:
+        while j <= len(s)-1:
             counter[s[j]] += 1
 
             while i <= len(s)-1 and len(counter) > k:
