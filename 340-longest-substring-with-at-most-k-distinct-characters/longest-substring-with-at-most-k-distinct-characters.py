@@ -58,7 +58,7 @@ class Solution:
         while i <= j <= len(s)-1:
             counter[s[j]] += 1
 
-            while i <= j <= len(s)-1 and len(counter) > k:
+            while i <= len(s)-1 and len(counter) > k:
                 counter[s[i]] -= 1
                 if counter[s[i]] == 0:
                     del counter[s[i]]
