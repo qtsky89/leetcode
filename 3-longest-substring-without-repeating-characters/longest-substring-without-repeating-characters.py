@@ -12,6 +12,9 @@ class Solution:
 
         '''
         visited = {}
+
+        time: O(N)
+        space: O(N)
         '''
         while j <= len(s)-1:
             # need to make sure there is no repeating character
