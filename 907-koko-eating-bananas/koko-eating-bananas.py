@@ -19,7 +19,6 @@ class Solution:
         min_k = float('inf')
 
         while l<=r:
-            print(l, r)
             mid = (l+r) // 2
 
             tmp = 0
