@@ -1,18 +1,24 @@
 class Solution:
     def checkInclusion(self, s1: str, s2: str) -> bool:
-        s1_counter = Counter(s1)
+        c1 = Counter(s1)
 
-        p1, p2 = 0, len(s1)-1
+        i, j = 0, len(s1)-1
 
-        s2_counter = Counter(s2[0:len(s1)])
-        while p2 <= len(s2)-1:
-            # compare value of counter
-            if s1_counter == s2_counter:
+        '''
+        s2 = e i d b a o o o
+             i j
+
+        '''
+
+        while j <= len(s2)-1:
+            c2 = Counter(s2[i:j+1])            
+
+            if c1 == c2:
                 return True
             
-            if p2+1 <= len(s2)-1:
-                s2_counter[s2[p2+1]] += 1
-            s2_counter[s2[p1]] -= 1
+            i, j = i+1, j+1
 
-            p1, p2 = p1+1, p2+1
         return False
+
+            
+
