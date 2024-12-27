@@ -13,7 +13,7 @@ class Solution:
         '''
         visited = {}
         '''
-        while i <= j <= len(s)-1:
+        while j <= len(s)-1:
             # need to make sure there is no repeating character
             while s[j] in visited:
                 visited.remove(s[i])
