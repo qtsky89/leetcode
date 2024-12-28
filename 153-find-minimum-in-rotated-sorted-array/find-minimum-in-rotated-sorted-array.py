@@ -1,26 +1,39 @@
 class Solution:
     def findMin(self, nums: List[int]) -> int:
+        '''
+        [1, 2, 3, 4, 5]
+        [5, 1, 2, 3, 4] rotate 1
+        [4, 5, 1, 2, 3] rotate 2
+        [3, 4, 5, 1, 2] rotate 3
+        [2, 3, 4, 5, 1] rotate 4
+        [1, 2, 3, 4, 5] rotate 5
+
+
+        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        [10, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        [9, 10, 1, 2, 3, 4, 5, 6, 7, 8]
+
+                   *
+        [8, 9, 10, 1, 2, 3, 4, 5, 6, 7] n=3
+                
+
+        find this index (smallest nums[i] index)
+        nums[i-1] > nums[i] < nums[i+1]
+        '''
+
         if len(nums) == 1:
             return nums[0]
 
-        i, j  = 0 , len(nums)-1
+        l, r = 0, len(nums)-1
 
-        while i <= j:
-            mid = (i + j) //2
+        while l<=r:
+            mid = (l+r) // 2
 
-            '''
-            if nums[mid] == target:
-                    return mid
-            '''
-
-            if nums[i-1] > nums[i]:
-                return nums[i]
-            elif nums[j-1] > nums[j]:
-                return nums[j]
-            elif nums[mid-1] > nums[mid]:
+            # find it!
+            if nums[mid-1] > nums[mid]:
                 return nums[mid]
-            
-            if nums[i] < nums[mid]:
-                i = mid + 1
+            elif nums[mid] < nums[r]:
+                r = mid - 1
             else:
-                j = mid - 1
+                l = mid + 1
+    
