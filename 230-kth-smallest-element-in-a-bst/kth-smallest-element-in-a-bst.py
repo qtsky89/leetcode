@@ -5,6 +5,7 @@
 #         self.left = left
 #         self.right = right
 class Solution:
+    # time: O(k), space: O(k)
     def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
         index = 0
         smallest = 0
@@ -20,6 +21,7 @@ class Solution:
             index += 1
             if index == k:
                 smallest = node.val
+                return
             
             inorder(node.right)
 
