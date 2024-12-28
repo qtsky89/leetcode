@@ -33,7 +33,7 @@ class Solution:
         s    f
         '''
 
-
+        # O(N)
         s,f  = head, head.next
 
         while f and f.next:
@@ -45,14 +45,16 @@ class Solution:
         
         prev, p = None, tmp
 
+        # O(N)
         while p:
             tmp = p.next
             p.next = prev
             prev, p = p, tmp
 
-        
+        # p2 is the hard part
         p1, p2 = head, prev
 
+        # O(N)
         while p1 and p2:
             tmp1 = p1.next
             tmp2 = p2.next
@@ -61,7 +63,7 @@ class Solution:
 
             p1,p2 = tmp1, tmp2
         
-        
+        # time complexity: O(N), space complexity: O(1)
 
         
         
