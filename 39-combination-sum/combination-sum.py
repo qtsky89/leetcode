@@ -1,7 +1,5 @@
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
-        candidates.sort()
-
         # [2, 3, 6, 7]
         ret: list[list[int]] = []
         def dfs(current_work: list[int], current_sum: int, current_index: int) -> None:
