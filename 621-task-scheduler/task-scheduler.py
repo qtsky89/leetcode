@@ -1,37 +1,52 @@
+from heapq import heappush
+
 class Solution:
     def leastInterval(self, tasks: List[str], n: int) -> int:
         '''
-        c = {
+        tasks = A A A B B B n = 2
+
+        efficient way to choose is select high frequency label
+
+        A -> B -> idle -> A -> B -> idle -> A -> B
+
+
+        counter = {
             A : 3
             B : 3
-            C : 2
-            D : 1
         }
-        [[-3, A], [-3, B] ...]
 
-        n = 3
+        heap = (-3, A) (-3, B)
+
+                
+
+        q = deque( [(-2, A), 2] )
+        
+
+        time: O(N), space: O(N)
         '''
 
+        counter = Counter(tasks)
         heap = []
-        c = Counter(tasks)
-        for key in c:
-            heapq.heappush(heap, [-c[key], key])
+        for key, value in counter.items():
+            heappush(heap, (-value, key))
         
+        # whenever spcific CPU is used, it cool down in this q
         q = deque()
+
         time = 0
         while heap or q:
             time += 1
-
-            if q and q[0][0] == time:
-                heapq.heappush(heap, q.popleft()[1])
-            
-            if not heap:
-                continue
-
-            val, key = heapq.heappop(heap)
-
-            if val+1 < 0:
-                q.append([time+n+1 ,[val+1, key]])
-            
+            # put heap when the cool down q meet time
+            if q and q[0][1] <= time:
+                item = q.popleft()
+                heappush(heap, item[0])
+                       
+            if heap:
+                (count, label) = heappop(heap)
+                if count + 1 != 0:
+                    q.append([(count+1, label), time+n+1])
         return time
             
+
+        
+        
