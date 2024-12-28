@@ -18,7 +18,7 @@ class Solution:
                 
 
         find this index (smallest nums[i] index)
-        nums[i-1] > nums[i] < nums[i+1]
+        nums[i-1] > nums[i]
         '''
 
         if len(nums) == 1:
@@ -27,7 +27,7 @@ class Solution:
         l, r = 0, len(nums)-1
 
         while l<=r:
-            mid = (l+r) // 2
+            mid = l + (r-l) // 2
 
             # find it!
             if nums[mid-1] > nums[mid]:
@@ -37,3 +37,6 @@ class Solution:
             else:
                 l = mid + 1
     
+    '''
+        time complexity: O(logN) space compexity: O(1)
+    '''
