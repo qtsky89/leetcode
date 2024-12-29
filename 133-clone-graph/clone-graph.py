@@ -24,3 +24,5 @@ class Solution:
                 new_node.neighbors.append(self.cloneGraph(neighbor))
 
         return self._old_new[node]
+
+# time complexity: O(V+E), space complexity: O(V+E)
