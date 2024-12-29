@@ -25,4 +25,4 @@ class Solution:
 
         return self._old_new[node]
 
-# time complexity: O(V+E), space complexity: O(V+E)
+# time complexity: O(V+E), space complexity: O(V)
