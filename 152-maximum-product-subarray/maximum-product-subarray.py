@@ -1,28 +1,29 @@
 class Solution:
     def maxProduct(self, nums: List[int]) -> int:
-        '''
-        nums = [2, 3, -2, 4]
-
-        keep the maximum
-        keep the minimum
-
-        0 
-        maximum => 1
-        minimum -> 1
+        
         '''
 
-        max_value = max(nums)
+        -4, -12, 24
 
-        cur_max, cur_min = 1, 1
+        nums =   -2   3   -4
+        c_max 1  -2   3    24
+        c_min 1  -2   -6   -12
 
-        for i in range(len(nums)):
-            if nums[i] == 0:
-                cur_max, cur_min = 1, 1
-                continue
+        c_max = max(nums[i], c_max * nums[i], c_min * nums[i])
+        c_min = min(nums[i], c_max * nums[i], c_min * nums[i])
+        '''
 
-            cur_max, cur_min = max(nums[i], cur_max * nums[i], cur_min * nums[i]), min(nums[i], cur_max * nums[i], cur_min * nums[i])
+        c_max, c_min = 1, 1
+
+        ret = max(nums)
+        for n in nums:
+            c_max, c_min = max(n, c_max * n, c_min * n), min(n, c_max * n, c_min * n)
+
+            ret = max(ret, c_max)
+        
+        return ret
             
 
-            max_value = max(max_value, cur_max)
+
+
         
-        return max_value
