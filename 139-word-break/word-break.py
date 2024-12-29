@@ -1,28 +1,30 @@
 class Solution:
-    '''
-    s = "leetcode"
-                  ^
-
-    '''
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        '''
+        s = c a t s a n d o g           wordDict = cats, dog, sand, and, cat 
+            ^
+        '''
+
         ret = False
         visited = set()
-        def dfs(current_i: int) -> None:
+
+        def dfs(current_index: index) -> None:
             nonlocal ret
             if ret:
                 return
 
-            if current_i == len(s):
+            if current_index == len(s):
                 ret = True
                 return
             
-            visited.add(current_i)
+            visited.add(current_index)
             
-            # word = leet
             for word in wordDict:
-                if s[current_i:current_i+len(word)] == word and current_i+len(word) not in visited:
-                    dfs(current_i+len(word))
-
+                if s[current_index:current_index+len(word)] == word and current_index+len(word) not in visited:
+                    dfs(current_index+len(word))
+        
         dfs(0)
 
         return ret
+
+        
