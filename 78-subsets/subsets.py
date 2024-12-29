@@ -1,31 +1,12 @@
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
-        '''
-        nums = [1, 2, 3]
-
-        []
-        [1]
-        [2]
-        [3]
-        [12]  =>  [21]
-        [23]
-        [13]
-        [123]
-        '''
-
-        nums.sort()
-
         ret: list[list[int]] = []
-
-        # something here
-        def dfs(current_work: list[int]) -> None:
+        def dfs(current_work: list[int], current_i: int) -> None:
             ret.append(current_work)
 
-            for n in nums:
-                if not current_work or (current_work and current_work[-1] < n):
-                    dfs(current_work + [n])
+            for i in range(current_i, len(nums)):
+                dfs(current_work[:] + [nums[i]], i+1)
 
-        dfs([])
+        dfs([], 0)
 
         return ret
-        
