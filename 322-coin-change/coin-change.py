@@ -1,50 +1,31 @@
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
         '''
-        coins = 1, 2, 5 amount = 13
-                5 + 5 + 2 + 1
-    
-        dp[13] => dp[8] + 1
-               => dp[11] + 1
-               => dp[12] + 1
-        
-
-        1 2 3 4 5 6 7 8 9 10 11 12 13
-                                    ^
-                      ^
-            ^
-        ^
-        '''
-
-        '''
-        {
-            1 : 1
-            2 : 1
+        count_map = {
             5 : 1
+            2 : 1
+            1 : 1
         }
+
         '''
 
-        if amount == 0:
-            return 0
+        coins.sort(reverse=True)
 
-        dp = {coin: 1 for coin in coins}
+        count_map = {}
 
-        def dfs(n: int) -> int:
-            if n in dp:
-                return dp[n]
+        def dfs(current_sum: int, coin_count: int) -> None:
+            if current_sum > amount:
+                return
+
+            if current_sum in count_map and count_map[current_sum] <= coin_count:
+                return
             
-            candidates = []
+            count_map[current_sum] = coin_count
+                
             for coin in coins:
-                if n - coin >= 0:
-                    tmp = dfs(n - coin)
-                    if tmp >= 0:
-                        candidates.append(tmp + 1)
-            
-            if candidates:
-                dp[n] = min(candidates)
-            else:
-                dp[n] = -1
+                dfs(current_sum+coin, coin_count+1)
 
-            return dp[n]
+        dfs(0, 0)
+
+        return count_map[amount] if amount in count_map else -1
         
-        return dfs(amount)
