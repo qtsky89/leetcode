@@ -2,10 +2,6 @@ from bisect import bisect_left
 
 class Solution:
     def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
-        intervals.append(newInterval)
-
-        intervals.sort(key=lambda x:x[0])
-
         index = bisect_left(intervals, newInterval)
         intervals.insert(index, newInterval)
 
