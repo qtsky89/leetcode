@@ -1,29 +1,36 @@
 class Solution:
     def checkInclusion(self, s1: str, s2: str) -> bool:
-        c1 = Counter(s1)
-
         i, j = 0, len(s1)-1
 
-        '''
-        s2 = e i d b a o o o
-             i j
+        s1_counter = {}
+        for s in s1:
+            if s in s1_counter:
+                s1_counter[s] += 1
+            else:
+                s1_counter[s] = 1
 
-        '''
-        c2 = Counter(s2[i:j+1])
+        s2_counter = {}
+        for s in s2[:len(s1)]:
+            if s in s2_counter:
+                s2_counter[s] += 1
+            else:
+                s2_counter[s] = 1
+
         while j <= len(s2)-1:
-            if c1 == c2:
+            if s1_counter == s2_counter:
                 return True
-
+            
             if j+1 <= len(s2)-1:
-                c2[s2[j+1]] += 1
-                c2[s2[i]] -= 1
-
-                if c2[s2[i]] == 0:
-                    del c2[s2[i]]
+                if s2[j+1] in s2_counter:
+                    s2_counter[s2[j+1]] += 1
+                else:
+                    s2_counter[s2[j+1]] = 1
+            
+                s2_counter[s2[i]] -= 1
+                if s2_counter[s2[i]] == 0:
+                    del s2_counter[s2[i]]
 
             i, j = i+1, j+1
+        
 
         return False
-
-            
-
