@@ -1,21 +1,23 @@
 class Solution:
     def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
-        # just add
         intervals.append(newInterval)
-        
-        # sort by start
-        intervals.sort(key= lambda x:x[0])
 
-        ret = [intervals[0]]
-        # merge
-        for i in range(1, len(intervals)):
-            # is overlaped? then merge
-            if intervals[i][0] <= ret[-1][1]:
-                ret[-1][1] = max(intervals[i][1], ret[-1][1])
+        intervals.sort(key=lambda x:x[0])
+
+        filtered_intervals: list[list[int]] = []
+
+        for start, end in intervals:
+            if not filtered_intervals:
+                filtered_intervals.append([start, end])
+                continue
+            
+            # is merged ?
+            if filtered_intervals[-1][1] >= start:
+                filtered_intervals[-1][0] = min(filtered_intervals[-1][0], start)
+                filtered_intervals[-1][1] = max(filtered_intervals[-1][1], end)
             else:
-                ret.append(intervals[i])
-        return ret
+                filtered_intervals.append([start, end])
         
-
-        
-        
+        return filtered_intervals
+            
+            
