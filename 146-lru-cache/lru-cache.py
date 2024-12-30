@@ -1,65 +1,63 @@
 class DoubleLinkedListNode:
-    def __init__(self, key: int = None, val: int = None, prev: 'DoubleLinkedListNode' = None, next: 'DoubleLinkedListNode' = None) -> None:
+    def __init__(self, key: int, val: int) -> None:
         self.key = key
         self.val = val
-        self.prev = prev
-        self.next = next
+        self.prev = None
+        self.next = None
 
 class DoubleLinkedList:
     def __init__(self) -> None:
-        self.front = DoubleLinkedListNode()
-        self.back = DoubleLinkedListNode()
+        self.head = DoubleLinkedListNode(None, None)
+        self.tail = DoubleLinkedListNode(None, None)
 
-        self.front.next = self.back
-        self.back.prev = self.front
+        self.head.next, self.tail.prev = self.tail, self.head
     
-    def add_back(self, target: DoubleLinkedListNode) -> None:
-        self.back.prev.next, target.prev, target.next, self.back.prev  = target, self.back.prev, self.back, target
-    
-    def delete_target(self, target: DoubleLinkedListNode) -> None:
-        target.prev.next, target.next.prev = target.next, target.prev
+    def add_tail(self, new_node: DoubleLinkedListNode) -> None:
+        self.tail.prev.next, new_node.prev, new_node.next, self.tail.prev = new_node, self.tail.prev, self.tail, new_node
+        
+    def delete_node(self, exist_node: DoubleLinkedListNode) -> None:
+        exist_node.prev.next, exist_node.next.prev = exist_node.next, exist_node.prev
+
 
 class LRUCache:
-    def __init__(self, capacity: int):
-        self._cache_map: dict[int, DoubleLinkedListNode] = {}
-        self._priotize_list: DoubleLinkedList = DoubleLinkedList()
-        self._capacity = capacity
+    def __init__(self, capacity: int) -> None:
+        self.cache: dict[int, DoubleLinkedListNode] = {}
+        self.list: DoubleLinkedList = DoubleLinkedList()
+        self.capacity = capacity
 
     def get(self, key: int) -> int:
-        if key not in self._cache_map:
+        if key not in self.cache:
             return -1
         
-        target = self._cache_map[key]
-        
-        # remove
-        self._priotize_list.delete_target(target)
-        self._priotize_list.add_back(target)
+        exist_node = self.cache[key]
 
-        return target.val
+        self.list.delete_node(exist_node)
+        self.list.add_tail(exist_node)
+
+        return exist_node.val
+
 
     def put(self, key: int, value: int) -> None:
-        # update
-        if key in self._cache_map:
-            target = self._cache_map[key]
-            target.val = value
-            target.prev.next, target.next.prev = target.next, target.prev
-            self._priotize_list.add_back(target)
+        # update (similar to get)
+        if key in self.cache:
+            exist_node = self.cache[key]
+
+            exist_node.val = value
+
+            self.list.delete_node(exist_node)
+            self.list.add_tail(exist_node)
         else: # create
-            target = DoubleLinkedListNode(key, value)
-            self._priotize_list.add_back(target)
-            self._cache_map[key] = target
+            new_node = DoubleLinkedListNode(key, value)
+            self.cache[key] = new_node
 
-            if len(self._cache_map) > self._capacity:
-                # remove least recently used node
-                target = self._priotize_list.front.next
-                self._priotize_list.delete_target(target)
+            self.list.add_tail(new_node)
 
-                del self._cache_map[target.key]
-                
-            
-            
+            # need to remove
+            if len(self.cache) > self.capacity:
+                target = self.list.head.next
+                del self.cache[target.key]
+                self.list.delete_node(target)
 
-        
 
 # Your LRUCache object will be instantiated and called as such:
 # obj = LRUCache(capacity)
