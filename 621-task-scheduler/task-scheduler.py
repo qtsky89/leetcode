@@ -1,52 +1,46 @@
-from heapq import heappush
-
 class Solution:
     def leastInterval(self, tasks: List[str], n: int) -> int:
         '''
-        tasks = A A A B B B n = 2
-
-        efficient way to choose is select high frequency label
-
-        A -> B -> idle -> A -> B -> idle -> A -> B
-
-
-        counter = {
+        c = {
             A : 3
             B : 3
         }
 
-        heap = (-3, A) (-3, B)
+        heap = [(-3, A), (-3, B)]
 
-                
+        A B idle A B idle A B
 
-        q = deque( [(-2, A), 2] )
         
-
-        time: O(N), space: O(N)
         '''
 
-        counter = Counter(tasks)
-        heap = []
-        for key, value in counter.items():
-            heappush(heap, (-value, key))
+        c = Counter(tasks)
         
-        # whenever spcific CPU is used, it cool down in this q
-        q = deque()
+        heap = []
+
+        for key, value in c.items():
+            heapq.heappush(heap, (-value, key))
+        
+        cooldown_q = deque()
+        # [time, item]
 
         time = 0
-        while heap or q:
+        while heap or cooldown_q:
             time += 1
-            # put heap when the cool down q meet time
-            if q and q[0][1] <= time:
-                item = q.popleft()
-                heappush(heap, item[0])
-                       
-            if heap:
-                (count, label) = heappop(heap)
-                if count + 1 != 0:
-                    q.append([(count+1, label), time+n+1])
-        return time
-            
 
-        
-        
+            if cooldown_q and cooldown_q[0][0] <= time:
+                _, item = cooldown_q.popleft()
+                heapq.heappush(heap, item)
+            
+            if not heap:
+                continue
+
+            count, char = heapq.heappop(heap)
+            count += 1
+
+            if count == 0:
+                continue
+            else:
+                cooldown_q.append([time+n+1, (count, char)])
+            
+        return time
+
