@@ -3,32 +3,42 @@
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
+
+class HeapNode:
+    def __init__(self, listNode: ListNode = None) -> None:
+        self.node = listNode
+
+    def __lt__(self, other: 'HeapNode') -> bool:
+       return True 
+
+
+from heapq import heappush, heapify
+
+
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
         '''
-        [
-        1->4->5,
-        1->3->4,
-        2->6
-        ]
+        heap = [(1, Node), (2, Node), (2, Node)]
+
         '''
-
-        ret = ListNode(None)
-        p = ret
-
-        # 1, 1, 2
         heap = []
-        for index, l in enumerate(lists):
-            if l:
-                heapq.heappush(heap, [l.val, index])
+        
+        for head in lists:
+            if head:
+                heap.append((head.val, HeapNode(head)))
+        
+        heapify(heap)
+
+        dummy = ListNode()
+        p = dummy
         
         while heap:
-            small_val, index = heapq.heappop(heap)
-            lists[index] = lists[index].next
-            if lists[index]:
-                heapq.heappush(heap, [lists[index].val, index])
-
-            p.next = ListNode(small_val)
+            node = heappop(heap)[1].node
+            p.next = node
             p = p.next
 
-        return ret.next
+            if node.next:
+                heappush(heap, (node.next.val, HeapNode(node.next)))
+        
+        return dummy.next
+        
