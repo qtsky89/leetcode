@@ -3,12 +3,13 @@ class Solution:
         ret = []
 
         i, j = 0, 0
+
         while i <= len(word1)-1 and j <= len(word2)-1:
             ret.append(word1[i])
-            ret.append(word2[j])
+            ret.append(word2[i])
 
             i, j = i+1, j+1
-        
+
         while i <= len(word1)-1:
             ret.append(word1[i])
             i+=1
@@ -18,5 +19,3 @@ class Solution:
             j+=1
         
         return ''.join(ret)
-
-        
