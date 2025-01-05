@@ -25,6 +25,6 @@ class Solution:
             else:
                 r = m - 1
 
-        return (l+r) // 2
+        return l-1 if l-1 >=0 else 0
 
         
