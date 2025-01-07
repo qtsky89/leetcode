@@ -29,7 +29,7 @@ class Solution:
         q = deque()
         time = 0
 
-        ret = ""
+        ret = []
         while heap or q:
             time += 1
             while q and q[0][0] <= time:
@@ -39,14 +39,14 @@ class Solution:
             
             if heap:
                 count, key = heapq.heappop(heap)
-                ret += key
+                ret.append(key)
                 count += 1
 
                 if count < 0:
                     q.append((time+2, count, key))
             else:
                 return ""
-        return ret
+        return ''.join(ret)
         
 
         
