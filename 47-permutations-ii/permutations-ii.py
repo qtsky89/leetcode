@@ -17,7 +17,7 @@ class Solution:
                 return
             
             for i in range(len(nums)):
-                if i > 0 and nums[i] == nums[i-1] and i-1 not in visited:
+                if i > 0 and nums[i] == nums[i-1] and i-1 in visited:
                     continue
                 if i not in visited:
                     dfs(current_work + [nums[i]], visited | {i})
