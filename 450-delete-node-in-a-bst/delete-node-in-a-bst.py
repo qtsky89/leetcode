@@ -4,48 +4,44 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
 class Solution:
-    def _maxvalue(self, root: TreeNode) -> int:
-        if root and root.right:
-            return self._maxvalue(root.right)
-        else:
-            return root.val
-    
-    def _minvalue(self, root: TreeNode) -> int:
-        if root and root.left:
-            return self._minvalue(root.left)
-        else:
-            return root.val
-        
+    def smallest_node(self, node: TreeNode) -> TreeNode:
+        while node.left:
+            node = node.left
+        return node
+
     def deleteNode(self, root: Optional[TreeNode], key: int) -> Optional[TreeNode]:
         '''
-            5
-        3      6
-    2     4        7
+        1. if couldn't find,      => return base one => done
 
-        case1. if that node has no child, just delete it!
-        case2. if that node has only left child, swap left child's max value to that node
-        case3. if that node has right child, swap right child's min value to that node
-        case4. if that node has both childs, do that case2 or case3.
+        2. find one, no childeren => just remove the target => 
+        3. find one, one children => remove and children should be that position
+        4. find one, two children => remove and one of children should be that position (prefer left one)
         '''
 
         if not root:
             return None
         
-        if key < root.val:
-            root.left = self.deleteNode(root.left, key)
-        elif key > root.val:
-            root.right = self.deleteNode(root.right, key)
-        else:
-            # case1. if that node has no child, just delete it!
+        if root.val == key:
+            # 2. find one, no childeren => just remove the target => 
             if not root.left and not root.right:
                 return None
-            # case2. if that node has only left child, swap left child's max value to that node
-            elif root.left:
-                root.val = self._maxvalue(root.left)
-                root.left = self.deleteNode(root.left, root.val)
+            # 3. find one, one children => remove and children should be that position
+            elif not root.left:
+                return root.right
+            elif not root.right:
+                return root.left
+            # 4. find one, two children => remove and one of children should be that position (prefer right one)
             else:
-                root.val = self._minvalue(root.right)
-                root.right = self.deleteNode(root.right, root.val)
-
+                smallest_node = self.smallest_node(root.right)
+                root.val = smallest_node.val
+                root.right = self.deleteNode(root.right, smallest_node.val)
+        elif root.val < key:
+            root.right = self.deleteNode(root.right, key)
+        else:
+            root.left = self.deleteNode(root.left, key)
+        
         return root
+
+
