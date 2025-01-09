@@ -29,9 +29,8 @@ class Solution:
         course_map = {i: set() for i in range(numCourses)}
         def dfs(current_course: int) -> set[int]:
             if not course_map[current_course]:
-                course_map[current_course] |= set(adjacent_map[current_course])
-
                 for next_course in adjacent_map[current_course]:
+                    course_map[current_course].add(next_course)
                     course_map[current_course] |= dfs(next_course)
             
             return course_map[current_course]
