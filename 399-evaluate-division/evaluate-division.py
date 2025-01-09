@@ -39,7 +39,7 @@ class Solution:
             
             for next_char, value in adjacent_map[current_char]:
                 if next_char not in visited:
-                    ret = dfs(next_char, end_char, current_cal * value, set(visited))
+                    ret = dfs(next_char, end_char, current_cal * value, visited)
                     if ret != -1.0:
                         return ret
             return -1.0
