@@ -4,10 +4,7 @@ class Solution:
         arr = 9 > 4 > 2 < 10 > 7 < 8 = 8 > 1 < 9
               l       r
         '''
-
-        if len(arr) == 1:
-            return 1
-        
+       
         l, r = 0, 1
         prev_sign = ''
         max_turbulence_size = 1
