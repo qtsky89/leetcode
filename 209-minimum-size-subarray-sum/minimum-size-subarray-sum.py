@@ -1,28 +1,32 @@
 class Solution:
-    def sum(self, prefix_nums: list[int], i: int, j: int) -> int:
-        return prefix_nums[j] - (prefix_nums[i-1] if i-1 >= 0 else 0)
-        
-
     def minSubArrayLen(self, target: int, nums: List[int]) -> int:
         '''
-        nums =  2  3  1  2  4  3    target = 7
-                   ^     ^
-                
-             =>  2, 5, 6, 8, 12, 15
+        taret = 7, nums = 2, 3, 1, 2, 4, 3
+                          ^^                       2            min_val = float('inf')
+                          ^  ^                     5            min_val = float('inf')
+                          ^     ^                  6            min_val = float('inf')
+                          ^        ^               8            min_val = 4
+                              ^    ^               6            min_val = 4
+                              ^        ^           10           min_val = 4
+                                 ^     ^           7            min_val = 3
+                                    ^  ^           6            min_val = 3
+                                    ^     ^        9            min_val = 3
+                                       ^  ^        7            min_val = 2
+                                          ^^       3            min_val = 2
         '''
 
-        ret = float('inf')
+        min_length = float('inf')
+        l, r = 0, 0
 
-        prefix_sum = [nums[0]] * len(nums)
-        for i in range(1, len(nums)):
-            prefix_sum[i] = prefix_sum[i-1] + nums[i]
+        cur_sum = 0
+        while r < len(nums):
+            cur_sum += nums[r]
 
-        i, j = 0, 0
-        while j <= len(nums)-1:
-            while i <= j and self.sum(prefix_sum, i, j) >= target:
-                ret = min(ret, j-i+1)
-                i += 1
+            while l <= r and cur_sum >= target:
+                min_length = min(min_length, r-l+1)
+                cur_sum -= nums[l]
+                l += 1
 
-            j += 1
-        
-        return ret if ret != float('inf') else 0
+            r += 1
+        return min_length if min_length != float('inf') else 0
+
