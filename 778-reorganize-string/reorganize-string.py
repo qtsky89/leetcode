@@ -1,58 +1,68 @@
 class Solution:
     def reorganizeString(self, s: str) -> str:
         '''
-        s = aaaabbbccd
+        s =  a a a a b b b c c d
 
-        c = {
-            a : 4
-            b : 3
-            c : 2
-            d : 1
+             a b a b a c a b c d
+        
+        count_map = {
+            a: 4
+            b: 3
+            c: 2
+            d: 1  
         }
 
-        time = 0
-        heap = (-4, a), (-3, b) (-2, c) (-1, d)
+        heap = [(-4, a), (-3, b), (-2, c), (-1, d)]
 
-        q = deque()
-
-        => a b a b a c a b c d
+        1. use highest count as possible
+        2. don't use same character again
         '''
 
-        c = Counter(s)
-        
+        '''
+        count_map = {
+            a: 4
+            b: 3
+            c: 2
+            d: 1  
+        }
+        '''
+        count_map = Counter(s)
+
+        # heap = [(-4, a), (-3, b), (-2, c), (-1, d)]
         heap = []
-        for key in c:
-            heap.append((-c[key], key))
-        
+        for key, value in count_map.items():
+            heap.append((-value, key))
         heapq.heapify(heap)
         
-        q = deque()
+        # to cooldown previous used character
+        # cooldown_q = [(time, (-4, a)), ...]
+        cooldown_q = deque()
+        ret = []
+
         time = 0
 
-        ret = []
-        while heap or q:
+        while heap or cooldown_q:
             time += 1
-            while q and q[0][0] <= time:
-                time, count, key = q.popleft()
-
-                heapq.heappush(heap, (count, key))
+            if cooldown_q and cooldown_q[0][0] <= time:
+                _, data = cooldown_q.popleft()
+                
+                heapq.heappush(heap, data)
             
-            if heap:
-                count, key = heapq.heappop(heap)
-                ret.append(key)
-                count += 1
-
-                if count < 0:
-                    q.append((time+2, count, key))
-            else:
+            if not heap:
                 return ""
+            
+            count, char = heapq.heappop(heap)
+            ret.append(char)
+            count += 1
+
+            if count < 0:
+                cooldown_q.append((time+2, (count, char)))
+            
         return ''.join(ret)
-        
-
-        
-
-
+            
             
 
-        
+
+
+                
         
