@@ -22,13 +22,11 @@ class Solution:
                 # new one will be explode
                 if diff > 0:
                     a = 0
-                    continue
                 elif diff < 0:
                     stack.pop()
                 else:
                     stack.pop()
                     a = 0
-                    continue
             
             if a != 0:
                 stack.append(a)
