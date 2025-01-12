@@ -43,6 +43,4 @@ class Solution:
                 stack.append(number)    
                 i += 1
 
-        print(stack)
-
         return sum(stack)
