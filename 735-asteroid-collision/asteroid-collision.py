@@ -1,36 +1,39 @@
 class Solution:
     def asteroidCollision(self, asteroids: List[int]) -> List[int]:
         '''
-        asteroids = [5, 10, -5]
+        + - => explode recursively
+
+        asteroids = 5, 10 -5
+                           ^
+
+        stack = 5 10
         '''
 
-        i = 0
-
         stack = []
-        while i <= len(asteroids)-1:
+        for a in asteroids:
             if not stack:
-                stack.append(asteroids[i])
-                i+=1
+                stack.append(a)
                 continue
+
+            # explode
+            while stack and stack[-1] > 0 and a < 0:
+                diff = stack[-1] + a
+
+                # new one will be explode
+                if diff > 0:
+                    a = 0
+                    continue
+                elif diff < 0:
+                    stack.pop()
+                else:
+                    stack.pop()
+                    a = 0
+                    continue
             
-            if ((stack[-1] > 0 and asteroids[i] > 0) or
-                (stack[-1] < 0 and asteroids[i] < 0) or
-                (stack[-1] < 0 and asteroids[i] > 0)
-            ):
-                stack.append(asteroids[i])
-                i += 1
-                continue
-            
-            # collition
-            if abs(stack[-1]) == abs(asteroids[i]):
-                stack.pop()
-                i += 1
-                continue
-            elif abs(stack[-1]) > abs(asteroids[i]):
-                i += 1
-                continue
-            
-            while stack and stack[-1] > 0 and asteroids[i] < 0 and abs(stack[-1]) < abs(asteroids[i]):
-                stack.pop()
-            
+            if a != 0:
+                stack.append(a)
         return stack
+
+
+                
+            
