@@ -1,24 +1,29 @@
 class Solution:
     def simplifyPath(self, path: str) -> str:
-        ret = path.split('/')
+        '''
+        path = /home/user/Documents/../Pictures
 
-        if len(ret) == 1:
-            return '/'
-        
+        tmp = '', home, user, Documents, .., Pictures
+                                         ^
+        stack = home, user, Documents
+        '''
+
+        tmp = path.split('/')
+
         stack = []
-        i = 0
-        while i <= len(ret)-1:
-            if ret[i] == "" or ret[i] == ".":
-                i+=1
-                continue
-            if ret[i] == "..":
-                i += 1
-                if stack:
-                    stack.pop()
-                continue
 
-            stack.append(ret[i])
-            i += 1
-        
-        
+        for t in tmp:
+            if t == '' or t == '.':
+                continue
+            
+            if t == '..' and stack:
+                stack.pop()
+            elif t == '..':
+                continue
+            else:
+                stack.append(t)
+
         return '/' + '/'.join(stack)
+
+            
+        
