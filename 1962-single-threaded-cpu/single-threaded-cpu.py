@@ -1,43 +1,50 @@
 class Solution:
     def getOrder(self, tasks: List[List[int]]) -> List[int]:
         '''
-        tasks = [[1,2],[2,4],[3,2],[4,1]]
-                   ^
-        q = [[1,2],[2,4],[3,2],[4,1]]
-               ^
-        heap = [(2, 1, 1), ]
+        tasks => [1, 2, 0] [2, 4, 1] [3, 2, 2] [4, 1, 3]
 
+        tasks.sort() => [1, 2, 0] [2, 4, 1] [3, 2, 2] [4, 1, 3]
+        
+        time = 1
 
-        tasks = [enqueue_time, process_time, index]
-        heapValue = [process_time, index, enqueue_time]
+        heap = [(2, 0),]
+                  ^
+        process_time, index = heappop(heap)
+
+        ret.append(index)
+
         '''
 
-        for index, task in enumerate(tasks):
-            task.append(index)
+        # push original index
+        for index, t in enumerate(tasks):
+            t.append(index)
         
         # sort by enqueue time
         tasks.sort(key=lambda x:x[0])
 
-        heap = []
-        time = tasks[0][0]
-        ret = []
+        # (process_time, index)
+        heap: list[tuple[int, int]] = []
 
         i = 0
-        while i <= len(tasks)-1 or heap:
-            while i <= len(tasks)-1 and tasks[i][0] <= time:
-                enqueue_time, process_time, index = tasks[i]
-                heapq.heappush(heap, (process_time, index))
-                i+=1
+        ret = []
+        time = 0
+
+        while len(ret) < len(tasks):
+            while i <= len(tasks)-1:
+                if tasks[i][0] <= time:
+                    heapq.heappush(heap, (tasks[i][1], tasks[i][2]))
+                    i += 1
+                else:
+                    break
             
-            if heap:
-                process_time, index = heapq.heappop(heap)
-                time += process_time
-                ret.append(index)
-            else:
+            if not heap:
                 time = tasks[i][0]
+                continue
 
+            process_time, org_index = heapq.heappop(heap)
+            ret.append(org_index)
+
+            time += process_time
+            
         return ret
-            
-            
-
         
