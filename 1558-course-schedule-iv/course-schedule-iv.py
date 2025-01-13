@@ -1,45 +1,48 @@
 class Solution:
     def checkIfPrerequisite(self, numCourses: int, prerequisites: List[List[int]], queries: List[List[int]]) -> List[bool]:
         '''
-        numCourses = 4 (0, 1, 2, 3)
-
-        prerequisites = [[1, 0], [1, 2], [2, 0], [0, 3]]
-
-        queries = [[1, 0], [1, 2]]
-        
         adjacent_map = {
-            0: [3]
+            0: []
             1: [0, 2]
             2: [0]
-            3: []
         }
 
-        course_map = {
-            0 : {3}
-            1 : {0, 2, 3}
-            2 : {0, 3}
-            3 : {}
+        key: start course,
+        value: all end course (recursively)
+
+        cache_map = {
+            0: {}
+            1: {0, 2} <=
+            2: {0}
         }
+
+        if [1, 0] is it 0 is in the 1: {0, 2} ?
+            True
+        else
+            False
         '''
 
-        adjacent_map = {i: [] for i in range(numCourses)}
+        adjacent_map: defaultdict[int, list[int]] = defaultdict(list)
+
         for start, end in prerequisites:
             adjacent_map[start].append(end)
-
-        course_map = {i: set() for i in range(numCourses)}
-        def dfs(current_course: int) -> set[int]:
-            if not course_map[current_course]:
-                for next_course in adjacent_map[current_course]:
-                    course_map[current_course].add(next_course)
-                    course_map[current_course] |= dfs(next_course)
-            
-            return course_map[current_course]
         
+        cache_map: defaultdict[int, set[int]] = defaultdict(set)
+        def dfs(course: int) -> set[int]:
+            if course not in cache_map:
+                for next_course in adjacent_map[course]:
+                    cache_map[course].add(next_course)
+                    cache_map[course] |= dfs(next_course)
+            return cache_map[course]
+
         for i in range(numCourses):
             dfs(i)
-
+        
         ret = []
         for start, end in queries:
-            ret.append(end in course_map[start])
+            if end in cache_map[start]:
+                ret.append(True)
+            else:
+                ret.append(False)
         
         return ret
