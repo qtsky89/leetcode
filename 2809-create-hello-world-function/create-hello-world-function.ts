@@ -1,8 +1,8 @@
 function createHelloWorld() {
     
-    return function(...args): string {
-        return "Hello World"
-    };
+   return () => {
+    return "Hello World"
+   }
 };
 
 /**
