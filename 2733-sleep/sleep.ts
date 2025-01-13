@@ -1,6 +1,10 @@
 async function sleep(millis: number): Promise<void> {
-    return new Promise<void> (resolve => {
-        setTimeout(resolve, millis);
+    return new Promise<void> ((resolve, reject) => {
+        try {
+            setTimeout(resolve, millis);
+        } catch (err) {
+            reject(err);
+        }
     }
     )
 }
