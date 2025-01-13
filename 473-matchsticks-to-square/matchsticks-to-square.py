@@ -1,27 +1,43 @@
 class Solution:
     def makesquare(self, matchsticks: List[int]) -> bool:
-        sum_length = sum(matchsticks)
+        '''
+        matchsticks = [1, 1, 2, 2, 2]
 
-        if sum_length % 4 != 0:
+        sum(matchsticks) =  8
+
+        if 8 % 4 != 0:
             return False
-        
-        four_length = [0] * 4
-    
+
+        '''
+
         matchsticks.sort(reverse=True)
+
+        sum_matchsticks = sum(matchsticks)
+
+        if sum_matchsticks % 4 != 0:
+            return False
+
+        target = sum_matchsticks // 4
+
+        # top, bottom, left, right
+        current_stick = [0] * 4
+
+        '''
+        matchsticks = [1, 1, 2, 2, 2]
+                       ^
+        '''
 
         def dfs(i: int) -> bool:
             if i == len(matchsticks):
                 return True
             
             for j in range(4):
-                if four_length[j] + matchsticks[i] <= (sum_length // 4):
-                    four_length[j] += matchsticks[i]
-
-                    if dfs(i+1) == True:
+                if current_stick[j] + matchsticks[i] <= target:
+                    current_stick[j] += matchsticks[i]
+                    if dfs(i+1):
                         return True
-                    
-                    four_length[j] -= matchsticks[i]
+                    current_stick[j] -= matchsticks[i]
             return False
-        
-
         return dfs(0)
+
+        
