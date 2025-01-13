@@ -1,73 +1,68 @@
+from collections import deque
+
 class Solution:
     def longestDiverseString(self, a: int, b: int, c: int) -> str:
         '''
-        example1.
-            a => 1
-            b => 1
-            c => 7
+        a = 1, b = 1, c = 7
 
-            ''
-            'a'
-            'b'
-            'c'
+        {
+            a : 1
+            b : 1
+            c : 7
+        }
 
-            'ab'
-            'bc'
-            'ab'
+        => [(-7, c) (-1, a) (-1, b)]
 
-            'abc'
-            'abcc'
-            'abccc' => X
-                 ^
-            'ccaccbcc' => O
-
-            heap = (-7, 'c'), (-1, 'a'), (-1, 'c')
-            
-            => cccccccba
+        c c a 
         '''
-        heap = []
 
+        # make min heap (reversed sign)
+        heap = []
         if a != 0:
             heap.append((-a, 'a'))
         if b != 0:
             heap.append((-b, 'b'))
         if c != 0:
             heap.append((-c, 'c'))
-        
-        # heap = (-7, 'c'), (-1, 'a'), (-1, 'c')
-        '''
-            ret = c c 
-                    ^
-            q = (count, c)
-        '''
         heapq.heapify(heap)
 
-        # cool down queue (after 2times, it will cooldown in here for one iteration)
+        # make cooldown queue
+        # q = [(time, (-7, c)), ...]
         q = deque()
 
-        time = 0
         ret = []
+        time = 0
         while heap or q:
             time += 1
 
-            while q and q[0][2] <= time:
-                count, char, _ = q.popleft()
-                heapq.heappush(heap, (count, char))
+            # push back in the heap
+            if q and q[0][0] <= time:
+                _, data = q.popleft()
+                heapq.heappush(heap, data)
             
+            # process heap
+            # => [(-7, c) (-1, a) (-1, b)]
             if not heap:
-                return ''.join(ret)
-
-            count, char = heappop(heap)
+                break
+            count, char = heapq.heappop(heap)
+            
             count += 1
-
-            # need to cool down
-            if count != 0:
-                if ret and ret[-1] == char:
-                    q.append((count, char, time+2))
+            if count < 0:
+                if (ret and ret[-1] == char):
+                    q.append((time+2, (count, char)))
                 else:
-                    heappush(heap, (count, char))
-        
+                    heapq.heappush(heap, (count, char))
             ret.append(char)
 
         return ''.join(ret)
+            
+            
 
+
+
+
+
+
+        
+
+        
