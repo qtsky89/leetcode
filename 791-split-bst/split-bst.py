@@ -4,52 +4,21 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-
 class Solution:
     def splitBST(self, root: Optional[TreeNode], target: int) -> List[Optional[TreeNode]]:
-        '''
-                4
-            2       6
+        if not root:
+            return [None, None]
         
-        1      3    5   7
+        if root.val <= target:
+            left, right = self.splitBST(root.right, target)
 
+            root.right = left
 
-           2
+            return root, right
+        else:
+            left, right = self.splitBST(root.left, target)
 
-        1
-        '''
+            root.left = right
 
-        less_euql = TreeNode(None)
-
-        greater = TreeNode(None)
-
-        def add(node: TreeNode, val):
-            if not node:
-                return
-           
-            if node.val == None or val < node.val:
-                if node.left:
-                    add(node.left, val)
-                else:
-                    node.left = TreeNode(val)
-            elif val > node.val:
-                if node.right:
-                    add(node.right, val)
-                else:
-                    node.right = TreeNode(val)
-        
-        def dfs(node: TreeNode):
-            if not node:
-                return
+            return left, root
             
-            if node.val <= target:
-                add(less_euql, node.val)
-            else:
-                add(greater, node.val)
-
-            dfs(node.left)
-            dfs(node.right)
-        
-        dfs(root)
-
-        return [less_euql.left, greater.left]
