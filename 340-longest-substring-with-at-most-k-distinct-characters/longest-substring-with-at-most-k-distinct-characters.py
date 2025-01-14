@@ -1,32 +1,40 @@
 class Solution:
     def lengthOfLongestSubstringKDistinct(self, s: str, k: int) -> int:
         '''
-        count = {
-            
+        s =  e c e b a
+            lr
 
+        count_map = {
+            a : 1
+            b : 1
         }
-        s =    a, b  k = 1
-              ^^
+        k=2
         '''
 
         if k == 0:
             return 0
 
-        ret = 0
-        p1, p2 = 0, 0
-        count = defaultdict(int)
+        count_map: defaultdict[str, int] = defaultdict(int)
 
-        while p2 <= len(s) -1:
-            count[s[p2]] += 1
+        longest_length = 0
+        l, r = 0, 0
 
-            while len(count) > k:
-                count[s[p1]] -= 1
-                if count[s[p1]] == 0:
-                    del count[s[p1]]
-                p1 += 1
-            ret = max(ret, p2-p1+1)
+        while r <= len(s)-1:
+            count_map[s[r]] += 1
 
-            p2 += 1
-        
-        return ret
+            while l <= r and len(count_map) > k:
+                count_map[s[l]] -= 1
+
+                if count_map[s[l]] == 0:
+                    del count_map[s[l]]
+
+                l += 1
+
+            longest_length = max(longest_length, r-l+1)
             
+            r += 1
+
+        return longest_length
+
+        
+        
