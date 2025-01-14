@@ -1,58 +1,62 @@
-'''
-self._follow_map = {
-    1 : {1, 2, 3, 4}
-            ^  ^  ^
-    }
-self._tweetMap = {
-    1 : [1, 2, 3]
-               ^
-}
-'''
-
-
 class Twitter:
-    def __init__(self) -> None:
-        self._follow_map: dict[int, set[int]] = {}
-        self._tweet_map: dict[int, tuple[int, int]] = {}
-        self._time = 0
+
+    def __init__(self):
+        '''
+        tweet_map = {
+            23:     [(99, 52525)]
+           (user_id): (time, tweet_id)
+        }
+        
+        follow_map = {
+            23 : {24, 221, 22323}
+            (followee)
+        }
+        '''
+
+        self.tweet_map: dict[int, list[tuple[int, int]]] = {}
+        self.follow_map: dict[int, set[int]] = {}
+        self.time = 0
+
 
     def postTweet(self, userId: int, tweetId: int) -> None:
-        self._time += 1
-        if userId in self._tweet_map:
-            self._tweet_map[userId].append((self._time, tweetId))
-        else:
-            self._tweet_map[userId] = [(self._time, tweetId)]
-        
-    def getNewsFeed(self, userId: int) -> List[int]:
-        # folloeeIds
-        followeeIds = [userId]
-        if userId in self._follow_map:
-            followeeIds.extend(list(self._follow_map[userId]))
+        self.time += 1
 
-        all_tweets: list[tuple[int, int]] = []
-        for user in followeeIds:
-            if user in self._tweet_map:
-                all_tweets.extend(self._tweet_map[user])
+        if userId in self.tweet_map:
+            self.tweet_map[userId].append((self.time, tweetId))
+        else:
+            self.tweet_map[userId] = [(self.time, tweetId)]
         
-        all_tweets.sort(key=lambda x: x[0], reverse=True)
+
+    def getNewsFeed(self, userId: int) -> List[int]:
+        folowee_ids ={userId}
+        if userId in self.follow_map:
+            folowee_ids |= self.follow_map[userId]
+
+        tweets = []
+        for folowee_id in folowee_ids:
+            if folowee_id in self.tweet_map:
+                tweets += self.tweet_map[folowee_id]
+        
+        tweets.sort(reverse=True, key = lambda x: x[0])
 
         ret = []
-        for i in range(min(10, len(all_tweets))):
-            ret.append(all_tweets[i][1])
+
+        for i in range(min(len(tweets), 10)):
+            ret.append(tweets[i][1])
+        
         return ret
 
-
-        
     def follow(self, followerId: int, followeeId: int) -> None:
-        if followerId in self._follow_map:
-            self._follow_map[followerId].add(followeeId)
+        if followerId in self.follow_map:
+            self.follow_map[followerId].add(followeeId)
         else:
-            self._follow_map[followerId] = {followeeId}
-
+            self.follow_map[followerId] = {followeeId}
+        
 
     def unfollow(self, followerId: int, followeeId: int) -> None:
-        if followerId in self._follow_map:
-            self._follow_map[followerId].remove(followeeId)
+        if followerId in self.follow_map:
+            self.follow_map[followerId].remove(followeeId)
+
 
 
 # Your Twitter object will be instantiated and called as such:
