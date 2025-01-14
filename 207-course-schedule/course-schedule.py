@@ -4,55 +4,60 @@ class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
         '''
         adjacent_map = {
-           0 : [1]
-           1 : [2]
-           3 : [2]
+            0 : [1, 2]
+            1 : [3]
+            2 : []
+            3 : []
+            4 : []
         }
 
         count_map = {
             0 : 0 <=
             1 : 1
-            2 : 2
+            2 : 1
             3 : 1
+            4 : 0 <=
         }
 
         '''
 
-        adjacent_map = defaultdict(list) # time: O(1)
-        count_map = {i: 0 for i in range(numCourses)} # time: O(V), space: O(V)
+        # build adjacent_map
+        adjacent_map: defaultdict[int, list[int]] = defaultdict(list)
+        count_map: dict[int, int] = {}
 
-        # time: O(E), space: O(E)
+        for i in range(numCourses):
+            count_map[i] = 0
+
         for end, start in prerequisites:
             adjacent_map[start].append(end)
-
             count_map[end] += 1
         
-        # O(V)
-        visited = set()
-
-        # q = [0]
         q = deque()
 
-        # time: O(V), space: O(V)
-        for key in count_map:
-            if count_map[key] == 0:
+        for key, value in count_map.items():
+            # leaf node
+            if value == 0:
                 q.append(key)
-        
-        # time: O(V)
+
+        visited = set()
         while q:
-            # item = 0
+            # 0, 4
             item = q.popleft()
             visited.add(item)
 
-            for next_course in adjacent_map[item]:
-                count_map[next_course] -= 1
+            for next_item in adjacent_map[item]:
+                count_map[next_item] -= 1
 
-                if count_map[next_course] == 0:
-                    q.append(next_course)
-
+                if count_map[next_item] == 0 and next_item not in visited:
+                    q.append(next_item)
+        
         return len(visited) == numCourses
+            
+        
+        
 
-        # time complexity: O(V+E), space complexity: O(V+E)
+        
+
         
 
         
