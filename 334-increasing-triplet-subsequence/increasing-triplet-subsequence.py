@@ -1,28 +1,29 @@
 class Solution:
     def increasingTriplet(self, nums: List[int]) -> bool:
         '''
-        nums = 2 1 5 0 4 6
-                     i j 
-        
-        nums[i] = 0
-        nums[j] = 4
-        nums[k] = 6
+        maximum = -float('inf')
+        second_maximum = -float('inf')
 
 
+        nums = 20,100,10,12,5,13
+                ^     
 
-
+        maximum = 100
+        second_maximum =  20
 
         '''
 
-        num_i, num_j = float('inf'), float('inf')
+        minimum = float('inf')
+        second_minimum = float('inf')
 
         for i in range(len(nums)):
-            if nums[i] <= num_i:
-                num_i = min(num_i, nums[i])
-            elif nums[i] <= num_j:
-                num_j = min(num_j, nums[i])
-            else:
+            if nums[i] > second_minimum:
                 return True
+            elif nums[i] < minimum:
+                minimum = nums[i]
+            elif minimum < nums[i] < second_minimum:
+                second_minimum = nums[i]
+        
         return False
 
-        
+
