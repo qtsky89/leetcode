@@ -8,7 +8,7 @@ class Solution:
             i, j = q.popleft()
 
             if not (0 <= i <= len(matrix)-1 ) or not ( 0 <= j <= len(matrix[0])-1 ):
-                continue
+                break
 
             if matrix[i][j] == target:
                 return True
