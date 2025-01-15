@@ -21,7 +21,7 @@ class Solution:
             # smallest target
             if nums[m-1] > nums[m]:
                 return nums[m]
-            elif nums[m] < nums[r]:
+            elif nums[m] <= nums[r]:
                 r = m - 1
             else:
                 l = m + 1
