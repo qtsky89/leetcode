@@ -10,61 +10,42 @@ class Solution:
         """
         
         '''
+
+        1 -> 2 -> 3          4 <- 5
+        ^                         ^
+
+
+        1 -> 5 -> 2-> 4 -> 3
+
+        '''
+
+        if not head.next:
+            return head
+
+        # find middle position
+        s, f = head, head.next
         
-
-        1 -> 2 -> 3 -> 4 -> 5-> None  None<- 6 <- 7 <- 8 <- 9 <- 10
-        h    s                                        f
-
-        1 -> 2 -> 10 -> 3 -> 8 ->  4 -> 7 -> 5 -> 6                   
-
-
-        1 -> 10 -> 2 -> 9 -> 3 -> 8 -> 4 -> 7 -> 5 -> 6
-        '''
-
-
-        '''
-        1 -> 2-> 3-> 4 -> 5 -> None, None<-6 <- 7 <-  8 <- 9 <- 10
-        p1                                                      p2
-
-        1 -> 10 -> 2
-
-
-        1 -> 2 -> 3
-        s    f
-        '''
-
-        # O(N)
-        s,f  = head, head.next
-
         while f and f.next:
-            s, f = s.next, f.next.next
-
+            s = s.next
+            f = f.next.next
         
         tmp = s.next
         s.next = None
         
+        # right nodes, change direction
         prev, p = None, tmp
-
-        # O(N)
         while p:
             tmp = p.next
             p.next = prev
+
             prev, p = p, tmp
-
-        # p2 is the hard part
+        
+        # merge
         p1, p2 = head, prev
-
-        # O(N)
+        
         while p1 and p2:
-            tmp1 = p1.next
-            tmp2 = p2.next
+            p1_next, p2_next = p1.next, p2.next
 
             p1.next, p2.next = p2, p1.next
 
-            p1,p2 = tmp1, tmp2
-        
-        # time complexity: O(N), space complexity: O(1)
-
-        
-        
-        
+            p1, p2 = p1_next, p2_next
