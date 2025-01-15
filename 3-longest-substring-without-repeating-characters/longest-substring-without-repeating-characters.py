@@ -1,31 +1,25 @@
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
         '''
-        s =  a b c a b c b b
-            ^^                   ret = 0
+        s = a b c a b c b b
+           lr
+
 
         '''
 
-        longest_length = 0
-        i, j = 0, 0
+        ret = 0
         visited = set()
+        l, r = 0, 0
 
-        '''
-        visited = {}
-
-        time: O(N)
-        space: O(N)
-        '''
-        while j <= len(s)-1:
-            # need to make sure there is no repeating character
-            while s[j] in visited:
-                visited.remove(s[i])
-                i += 1
+        while r <= len(s)-1:
+            while s[r] in visited:
+                visited.remove(s[l])
+                l += 1
             
-            visited.add(s[j])
+            visited.add(s[r])
 
-            longest_length = max(longest_length, j-i+1)
+            ret = max(ret, r-l+1)
 
-            j += 1
+            r += 1
         
-        return longest_length
+        return ret
