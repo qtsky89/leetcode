@@ -4,7 +4,8 @@ class Solution:
         binary search can only work in sorted array
 
         nums = [4, 5, 6, 7, 0, 1, 2]
-                            l  m   r
+                l        m        r
+
 
                 
         '''
@@ -20,9 +21,10 @@ class Solution:
             # smallest target
             if nums[m-1] > nums[m]:
                 return nums[m]
-            elif nums[m] < nums[r]:
-                r = m - 1
-            else:
+            elif nums[m] > nums[r]:
                 l = m + 1
+            else:
+                r = m - 1
+
         
                 
