@@ -8,21 +8,32 @@ class Node:
 
 from typing import Optional
 class Solution:
-    def __init__(self) -> None:
-        self._old_new: dict[Node, Node] = {}
+    def cloneGraph(self, root: Optional['Node']) -> Optional['Node']:
+        '''
+        {
+            old_node : new_node...
+        }
+        '''
 
-    def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
-        if not node:
-            return None
+        cache: dict[Node, Node] = {}
+        
+        def dfs(node: Node) -> None:
+            if not node:
+                return
 
-        if node not in self._old_new:
-            new_node = Node(node.val)
+            if node not in cache:
+                new_node = Node(node.val)
+                cache[node] = new_node
 
-            self._old_new[node] = new_node
-            
-            for neighbor in node.neighbors:
-                new_node.neighbors.append(self.cloneGraph(neighbor))
+                for neighbor in node.neighbors:
+                    new_node.neighbors.append(dfs(neighbor))
 
-        return self._old_new[node]
+            return cache[node]
+        
+        return dfs(root)
 
-# time complexity: O(V+E), space complexity: O(V)
+
+
+
+
+
