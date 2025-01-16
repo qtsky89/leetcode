@@ -4,55 +4,63 @@ class Solution:
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
         '''
         adjacent_map = {
-           0 : [1]
-           1 : [2]
-           3 : [2]
+            0 : [1]
+            2 : [1]
+            3 : [4]
+            5 : []
         }
 
         count_map = {
-            0 : 0 <=
-            1 : 1
-            2 : 2
-            3 : 1
+            0 : 0
+            2:  0
+            1 : 2
+            3 : 0
+            4 : 1
+            5 : 0
         }
 
+        1. make this adjacent_map done
+        2. make this count_map done
+        3. make q and put the course that count 0 only
+        4. keep doing that
+        5. if we visited all the course, return True else False
         '''
 
-        adjacent_map = defaultdict(list) # time: O(1)
-        count_map = {i: 0 for i in range(numCourses)} # time: O(V), space: O(V)
+        # 1. make this adjacent_map
+        adjacent_map: defaultdict[int, list[int]] = defaultdict(list)
+        count_map: dict[int, int] = {i: 0 for i in range(numCourses)}
 
-        # time: O(E), space: O(E)
         for end, start in prerequisites:
             adjacent_map[start].append(end)
-
+            
+            # 2. make this count_map    
             count_map[end] += 1
         
-        # O(V)
-        ret = []
-
-        # q = [0]
+        # 3. make q and put the course that count 0 only
         q = deque()
 
-        # time: O(V), space: O(V)
-        for key in count_map:
-            if count_map[key] == 0:
-                q.append(key)
+        for course in count_map:
+            if count_map[course] == 0:
+                q.append(course)
         
-        # time: O(V)
+        ret = []
+        # 4. keep doing that
+        # q = [0, 2, 3, 5]
         while q:
-            # item = 0
-            item = q.popleft()
-            ret.append(item)
+            # 0
+            course = q.popleft()
 
-            for next_course in adjacent_map[item]:
+            ret.append(course)
+
+            for next_course in adjacent_map[course]:
                 count_map[next_course] -= 1
 
                 if count_map[next_course] == 0:
                     q.append(next_course)
 
-        return ret if len(ret) == numCourses else []
 
-        # time complexity: O(V+E), space complexity: O(V+E)
+        # 5. if we visited all the course, return True else False
+        return ret if len(ret) == numCourses else []
         
 
         
