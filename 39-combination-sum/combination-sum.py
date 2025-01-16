@@ -1,18 +1,21 @@
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
-        # [2, 3, 6, 7]
+        candidates.sort()
+
         ret: list[list[int]] = []
-        def dfs(current_work: list[int], current_sum: int, current_index: int) -> None:
+
+        def dfs(current_index: int, current_sum: int, current_work: list[int]) -> None:
             if current_sum == target:
                 ret.append(current_work)
                 return
+            elif current_sum > target:
+                return
+            elif current_index == len(candidates):
+                return
             
             for i in range(current_index, len(candidates)):
-                if current_sum + candidates[i] <= target:
-                    dfs(current_work + [candidates[i]], current_sum + candidates[i], i)
-                
-        dfs([], 0, 0)
-
+                dfs(i, current_sum + candidates[i], current_work + [candidates[i]])
+            
+        dfs(0, 0, [])
 
         return ret
-        
