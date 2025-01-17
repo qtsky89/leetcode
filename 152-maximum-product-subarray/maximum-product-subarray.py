@@ -2,9 +2,8 @@ class Solution:
     def maxProduct(self, nums: List[int]) -> int:
         '''
         nums = 2 3 -2   4  5  0  -1  -2  4
-               
-               2 6  6   4  20 0   0   2     max
-                  -12 -48 240 0  -1  -2     min
+         1     2      
+         1     1 
 
         '''
         ret = max(nums)
