@@ -5,40 +5,36 @@
 #         self.next = next
 
 class HeapNode:
-    def __init__(self, listNode: ListNode = None) -> None:
-        self.node = listNode
+    def __init__(self, node: ListNode) -> None:
+        self.node = node
 
     def __lt__(self, other: 'HeapNode') -> bool:
-       return True 
-
-
-from heapq import heappush, heapify
+        return True
 
 
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
-        '''
-        heap = [(1, Node), (2, Node), (2, Node)]
-
-        '''
         heap = []
-        
-        for head in lists:
-            if head:
-                heap.append((head.val, HeapNode(head)))
-        
-        heapify(heap)
 
+        for li in lists:
+            if li:
+                heap.append((li.val, HeapNode(li)))
+        
+        heapq.heapify(heap)
+    
         dummy = ListNode()
         p = dummy
-        
+
         while heap:
-            node = heappop(heap)[1].node
-            p.next = node
+            _, heap_node = heapq.heappop(heap)
+
+            p.next = heap_node.node
             p = p.next
 
-            if node.next:
-                heappush(heap, (node.next.val, HeapNode(node.next)))
-        
+            node = heap_node.node.next
+
+            if node != None:
+                heapq.heappush(heap, (node.val, HeapNode(node)))
+            
+
         return dummy.next
-        
