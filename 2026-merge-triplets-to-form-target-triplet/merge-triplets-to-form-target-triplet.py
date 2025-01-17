@@ -1,51 +1,45 @@
 class Solution:
     def mergeTriplets(self, triplets: List[List[int]], target: List[int]) -> bool:
         '''
+            [2, 5, 3]
+            [1, 7, 5]
 
-        2, 5, 3
-        1, 7, 5
-
-        2, 7, 5
+            [2, 7, 5]
+             ^  ^  ^
 
 
-        # fist step, remove triplet that have above target value
-        # second stemp, 
-            first element is in the triplet?
-            second element is in the triplet?
-            third element is in the triplet?
+            [3, 2, 5]
 
-            it's all true then return True
-            else False
+
+            [2, 5, 3]
+            [2, 3, 4]
+            [1, 2, 5]
+            [5, 2, 3]
+             ^  ^  ^
+
+            [5, 5, 5]
 
         '''
 
-        # fist step, remove triplet that have above target value
-        filtered_triplets: list[list[int]] = []
-        for x, y, z in triplets:
-            if x > target[0] or y > target[1] or z > target[2]:
+        # step1 remove tirplets that have bigger value than target
+        filtered_triplets = []
+
+        for a, b, c in triplets:
+            if a > target[0] or b > target[1] or c > target[2]:
                 continue
-            else:
-                filtered_triplets.append([x, y, z])
-        
-        '''
-        # second step, 
-        first element is in the triplet?
-        second element is in the triplet?
-        third element is in the triplet?
+            filtered_triplets.append([a, b, c])
 
-        it's all true then return True
-        else False
-        '''
+        # step2 check the max value
+        is_a, is_b, is_c = False, False, False
+        for a, b, c in filtered_triplets:
+            if a == target[0]:
+                is_a = True
+            if b == target[1]:
+                is_b = True
+            if c == target[2]:
+                is_c = True
         
-        is_x, is_y, is_z = False, False, False
+        return is_a and is_b and is_c
+        
+        
 
-        for x, y, z in filtered_triplets:
-            if x == target[0]:
-                is_x = True
-            if y == target[1]:
-                is_y = True
-            if z == target[2]:
-                is_z = True
-        
-        return is_x and is_y and is_z
-        
