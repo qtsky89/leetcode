@@ -1,26 +1,10 @@
-from collections import Counter
+from collections import Counter, deque
+
 
 class Solution:
     def isNStraightHand(self, hand: List[int], groupSize: int) -> bool:
         '''
-        example2.
-            hand = [1, 2, 3, 4, 5] groupSize=4
-
-            [1, 2, 3, 4]
-            [1, 2, 3, 4, 5, 6, 7, 8]
-
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] => 
-
-            1, 2, 3, 4
-            5, 6, 7, 8
-
-        '''
-
-        if len(hand) % groupSize != 0:
-            return False
-        
-        '''
-        c = {
+        hand_map = {
             1: 1
             2: 2
             3: 2
@@ -31,31 +15,30 @@ class Solution:
         }
 
         '''
-        c = Counter(hand)
+        hand_map = Counter(hand)
+        
+        min_key = min(hand_map.keys())
 
-        cur_count = 0
-
-        smallest = min(c.keys())
-        q = deque([smallest])
+        q = deque([(min_key, 1)])
 
         while q:
-            item = q.popleft()
-            cur_count += 1
+            item, current_count = q.popleft()
 
-            c[item] -=1
-            if c[item] == 0:
-                del c[item]
+            hand_map[item] -= 1
+
+            if hand_map[item] == 0:
+                del hand_map[item]
             
-            if cur_count == groupSize:
-                cur_count = 0
-                if c:
-                    smallest = min(c.keys())
-                    q.append(smallest)
-                continue
-            
-            if item+1 not in c:
-                return False
-            
-            q.append(item+1)
+            if current_count == groupSize and hand_map:
+                min_key = min(hand_map.keys())
+                q.append((min_key, 1))
+            elif current_count < groupSize:
+                if (item + 1) not in hand_map:
+                    return False
+                
+                q.append((item+1, current_count+1))
         
         return True
+
+        
+        
