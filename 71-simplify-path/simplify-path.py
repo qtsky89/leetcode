@@ -1,11 +1,9 @@
 class Solution:
     def simplifyPath(self, path: str) -> str:
         '''
-        path = /home/user/Documents/../Pictures
+        /home/user/Documents/../Pictures
 
-        tmp = '', home, user, Documents, .., Pictures
-                                         ^
-        stack = home, user, Documents
+        tmp = ['', 'home', 'user', 'Documents', '..', 'Pictures']
         '''
 
         tmp = path.split('/')
@@ -15,15 +13,12 @@ class Solution:
         for t in tmp:
             if t == '' or t == '.':
                 continue
-            
-            if t == '..' and stack:
-                stack.pop()
-            elif t == '..':
-                continue
+
+            if t == '..':
+                if stack:
+                    stack.pop()
             else:
                 stack.append(t)
-
+        
         return '/' + '/'.join(stack)
-
-            
         
