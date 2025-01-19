@@ -5,18 +5,15 @@ class Solution:
         '''
         a = 1, b = 1, c = 7
 
-        {
-            a : 1
-            b : 1
-            c : 7
-        }
+        (-1, c)
 
-        => [(-7, c) (-1, a) (-1, b)]
 
-        c c a 
+        c c a c c b c c
+        
+
         '''
-
-        # make min heap (reversed sign)
+        
+        # heap = [(-7, c) (-1, a) (-1, b)]
         heap = []
         if a != 0:
             heap.append((-a, 'a'))
@@ -26,43 +23,30 @@ class Solution:
             heap.append((-c, 'c'))
         heapq.heapify(heap)
 
-        # make cooldown queue
-        # q = [(time, (-7, c)), ...]
-        q = deque()
-
+        cooldown_q = deque()
+        
         ret = []
-        time = 0
-        while heap or q:
+        time = 0 
+        # process heap
+        while heap or cooldown_q:
             time += 1
 
-            # push back in the heap
-            if q and q[0][0] <= time:
-                _, data = q.popleft()
+            # TODO. pop cooldown_q, push to heap
+            if cooldown_q and cooldown_q[0][0] <= time:
+                _, data = cooldown_q.popleft()
                 heapq.heappush(heap, data)
-            
-            # process heap
-            # => [(-7, c) (-1, a) (-1, b)]
+
             if not heap:
-                break
-            count, char = heapq.heappop(heap)
+                return ''.join(ret)
             
+            count, char = heapq.heappop(heap)
             count += 1
             if count < 0:
                 if (ret and ret[-1] == char):
-                    q.append((time+2, (count, char)))
+                    cooldown_q.append((time+2, (count, char)))
                 else:
                     heapq.heappush(heap, (count, char))
+
             ret.append(char)
-
+                
         return ''.join(ret)
-            
-            
-
-
-
-
-
-
-        
-
-        
