@@ -6,9 +6,10 @@
 #         self.right = right
 class Solution:
     def biggestNode(self, node: TreeNode) -> TreeNode:
-        while node.right:
-            node = node.right
-        return node
+        p = node
+        while p and p.right:
+            p = p.right
+        return p
 
 
     def deleteNode(self, root: Optional[TreeNode], key: int) -> Optional[TreeNode]:
