@@ -8,26 +8,12 @@ class Solution:
     def insertIntoBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
         if not root:
             return TreeNode(val)
-
-        ret = None
-
-        def dfs(node: TreeNode) -> None:
-            if not node:
-                return
-            
-            nonlocal ret
-            ret = node
-            
-            if node.val < val:
-                dfs(node.right)
-            else:
-                dfs(node.left)
         
-        dfs(root)
-
-        if val < ret.val:
-            ret.left = TreeNode(val)
+        if val < root.val:
+            root.left = self.insertIntoBST(root.left, val)
         else:
-            ret.right = TreeNode(val)
+            root.right = self.insertIntoBST(root.right, val)
         
         return root
+        
+        
