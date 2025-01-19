@@ -65,7 +65,7 @@ class Solution:
                 cooldown_q.append((time+2, (count, char)))
             
 
-        return ''.join(ret) if len(ret) == len(s) else ""
+        return ''.join(ret)
 
             
         
