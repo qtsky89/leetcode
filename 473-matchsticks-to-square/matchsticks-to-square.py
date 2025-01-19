@@ -1,43 +1,33 @@
 class Solution:
     def makesquare(self, matchsticks: List[int]) -> bool:
-        '''
-        matchsticks = [1, 1, 2, 2, 2]
-
-        sum(matchsticks) =  8
-
-        if 8 % 4 != 0:
-            return False
-
-        '''
-
         matchsticks.sort(reverse=True)
 
         sum_matchsticks = sum(matchsticks)
 
         if sum_matchsticks % 4 != 0:
             return False
-
+        
         target = sum_matchsticks // 4
-
+        
         # top, bottom, left, right
-        current_stick = [0] * 4
+        buckets = [0] * 4
 
-        '''
-        matchsticks = [1, 1, 2, 2, 2]
-                       ^
-        '''
-
-        def dfs(i: int) -> bool:
-            if i == len(matchsticks):
-                return True
+        ret = False
+        def dfs(current_i: int) -> None:
+            if current_i == len(matchsticks):
+                nonlocal ret
+                ret = True
+                return
             
             for j in range(4):
-                if current_stick[j] + matchsticks[i] <= target:
-                    current_stick[j] += matchsticks[i]
-                    if dfs(i+1):
-                        return True
-                    current_stick[j] -= matchsticks[i]
-            return False
-        return dfs(0)
+                if buckets[j] + matchsticks[current_i] <= target:
+                    buckets[j] += matchsticks[current_i]
+                    dfs(current_i+1)
+                    buckets[j] -= matchsticks[current_i]
 
+                if buckets[j] == 0:
+                    return
         
+        dfs(0)
+
+        return ret
