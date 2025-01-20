@@ -8,7 +8,7 @@ class Solution:
 
         def dfs(current_index: int, current_sum: int, current_work: list[int]) -> None:
             if current_sum == target:
-                ret.append(current_work)
+                ret.append(current_work[:])
                 return
             elif current_sum > target:
                 return
@@ -18,7 +18,10 @@ class Solution:
             for i in range(current_index, len(candidates)):
                 if i > current_index and candidates[i] == candidates[i - 1]:
                     continue
-                dfs(i+1, current_sum + candidates[i], current_work + [candidates[i]])
+                
+                current_work.append(candidates[i])
+                dfs(i+1, current_sum + candidates[i], current_work)
+                current_work.pop()
             
         dfs(0, 0, [])
 
