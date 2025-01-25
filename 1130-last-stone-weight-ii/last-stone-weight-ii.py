@@ -21,9 +21,9 @@ class Solution:
         def dfs(i: int, current_sum: int) -> int:
             if (i, current_sum) not in dp:
                 if current_sum >= target or i == len(stones):
-                    return abs(sum_stones - 2 * current_sum)
-                
-                dp[(i, current_sum)] = min(dfs(i+1, current_sum + stones[i]), dfs(i+1, current_sum))
+                    dp[(i, current_sum)] = abs(sum_stones - 2 * current_sum)
+                else:
+                    dp[(i, current_sum)] = min(dfs(i+1, current_sum + stones[i]), dfs(i+1, current_sum))
             
             return dp[(i, current_sum)]
 
