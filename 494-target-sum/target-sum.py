@@ -1,5 +1,5 @@
 class Solution:
-    # dfs
+    # dfs with cache memoization
     def findTargetSumWays(self, nums: List[int], target: int) -> int:
         
         cache = {}
