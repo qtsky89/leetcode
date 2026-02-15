@@ -16,10 +16,12 @@ class Solution:
                 return 0
             
             if (i, j) not in cache:
-                left = piles[i] if (j-i) % 2 == 1 else 0
-                right = piles[j] if (j-i) %2 == 1 else 0
+                is_allice_tern = (j-i) % 2 == 1
 
-                cache[(i, j)] = max(left + dfs(i+1, j), right + dfs(i, j-1))
+                if is_allice_tern:
+                    cache[(i, j)] = max(piles[i] + dfs(i+1, j), piles[j] + dfs(i, j-1))
+                else:
+                    cache[(i, j)] = min(dfs(i+1, j), dfs(i, j-1))
             
             return cache[(i, j)]
         
