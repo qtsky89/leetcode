@@ -37,8 +37,6 @@ class Solution:
             ret.append(leftover)
             columnNumber = columnNumber // 26
         
-        print(ret)
-        
         return ''.join([chr(ret[i] + ord('A')) for i in range(len(ret)-1, -1, -1)])
             
         
